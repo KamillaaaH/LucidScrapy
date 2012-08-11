@@ -2,10 +2,11 @@
 __author__="kamilla"
 __date__ ="$Aug 1, 2012 10:52:37 AM$"
 
-import LucidFetchFromUniao
-import LucidFetchFromGDF
+import LucidFetchReceitas
+import LucidFetchDespesas
 import mechanize
 import cookielib
+import VerifyDB
 
 def getBrowser():
         # Browser
@@ -30,11 +31,14 @@ def getBrowser():
         return br
 
 
-br = getBrowser()
+#br = getBrowser()
 
-BASE_URL_UNIAO = "http://www.portaltransparencia.gov.br/PortalTransparenciaListaAcoes.asp?Exercicio=2012&SelecaoUF=1&SiglaUF=DF&NomeUF=DISTRITO%20FEDERAL&CodMun=9701&NomeMun=BRASILIA"
-uniao = LucidFetchFromUniao.LucidFetchFromUniao()
-uniao.fetch(BASE_URL_UNIAO, br)
+db = VerifyDB.VerifyDB()
+db.verifyDB()
+
+#BASE_URL_UNIAO = "http://www.portaltransparencia.gov.br/PortalTransparenciaListaAcoes.asp?Exercicio=2012&SelecaoUF=1&SiglaUF=DF&NomeUF=DISTRITO%20FEDERAL&CodMun=9701&NomeMun=BRASILIA"
+#uniao = LucidFetchFromUniao.LucidFetchFromUniao()
+#uniao.fetch(BASE_URL_UNIAO, br)
 
 #BASE_URL_GDF = "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCredor&_dataSource=dsDespesasOrgaoCredor&isc_metaDataPrefix=_&isc_dataFormat=json"
 #gdf = LucidFetchFromGDF.LucidFetchFromGDF()
