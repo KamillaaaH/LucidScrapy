@@ -7,6 +7,9 @@ import LucidFetchDespesas
 import mechanize
 import cookielib
 import VerifyDB
+from pymongo import Connection
+import ast
+import json
 
 def getBrowser():
         # Browser
@@ -31,10 +34,53 @@ def getBrowser():
         return br
 
 
-#br = getBrowser()
+br = getBrowser()
 
-db = VerifyDB.VerifyDB()
-db.verifyDB()
+con = Connection('localhost', 27017)
+
+
+
+#db = VerifyDB.VerifyDB()
+#db.verifyDB(con)
+
+
+html = br.open("http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Geral&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-0&_dataSource=dsReceitasPorCategoria-0&isc_metaDataPrefix=_&isc_dataFormat=json").get_data()
+
+try:
+    db = con.test_receita
+    receitas = db.test_tipo_receita
+except:
+    print "ERRR 1"
+
+dict = ast.literal_eval(html)
+print type(dict)
+for s in dict.get('response').get('data'):
+    receita = {'codigo':s['CODIGO'], 'descricao': s['DESCRICAO'], 'prevista': s['PREVISTA'], 'realizada': s['REALIZADA']}
+
+print receitas.find({"codigo": "1"})
+
+#jsonFile = json.JSONDecoder().decode(html)
+#print type(jsonFile)
+#f = open('test', 'w')
+#f.write(html)
+
+#decode = ast.literal_eval(html)
+
+
+
+#my_dict = {}
+
+#for item in html.split(','):
+    #key,value = item.split(':')
+    #if my_dict.get( key ):
+        #my_dict[ key ] += int( value )
+    #else:
+        #my_dict[ key ] = int( value )
+
+#print my_dict
+
+
+
 
 #BASE_URL_UNIAO = "http://www.portaltransparencia.gov.br/PortalTransparenciaListaAcoes.asp?Exercicio=2012&SelecaoUF=1&SiglaUF=DF&NomeUF=DISTRITO%20FEDERAL&CodMun=9701&NomeMun=BRASILIA"
 #uniao = LucidFetchFromUniao.LucidFetchFromUniao()
