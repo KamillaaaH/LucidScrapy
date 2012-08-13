@@ -1,13 +1,13 @@
-PROG = libVectorHash
-HDRS = vector.h hashset.h
-SRCS = vector.c hashset.c
-OBJS = vector.o hashset.o
+PROG = moduleVectorHash
+HDRS = vector.h hashset.h support.h
+SRCS = vector.c hashset.c support.c
+OBJS = vector.o hashset.o support.o
 
 compile:
 	cc -fPIC -c $(SRCS)
-	cc -shared -o $(PROG) $(OBJS)
-	@echo "make complete."
+	cc -shared -o $(PROG).so $(OBJS)
+	@echo "Make complete."
 
 clean :
-	rm -f core $(PROG) $(OBJS)
+	rm -f core $(PROG).so $(OBJS)
 	@echo "$(obj) files are removed."

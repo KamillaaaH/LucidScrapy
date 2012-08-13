@@ -7,6 +7,8 @@ import mechanize
 import errno
 import os
 from bs4 import BeautifulSoup
+import ast
+from ctypes import *
 
 
 class LucidFetchReceitas():
@@ -14,16 +16,22 @@ class LucidFetchReceitas():
 
     def fetch(self, BASE_URL, br):
         html = br.open(BASE_URL).get_data()
-        self.storeData(html)
-        while(True):
+        dict = ast.literal_eval(html)
+
+        try:
+            load = cdll.LoadLibrary('./moduleVectorHash.so')
+        except:
+            print "Can't load C module!"
+        
+        load.CreateNewHashPy(len(dict), 10)
+
+        for s in dict.get('response').get('data'):
             try:
-                print "\n\n ============= Getting data from page number " + str(self.getNumFiles()) + " ============="
-                nextPage = self.getNextPage(BASE_URL, html)
-                html = br.open(nextPage).get_data()
-                self.storeData(html)
-            except mechanize.HTTPError, e:
-                print str(e.code) + " - Internal Server Errror"
-                break
+                load.EnterItemPy(str(s))
+            except:
+                print "Can't save element in hash"
+
+            
 
     def storeData(self, html):
         self.verifyFolder("transferedToGDF")
