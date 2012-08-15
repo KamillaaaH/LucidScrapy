@@ -31,6 +31,8 @@ class LucidFetchReceitas():
             except:
                 print "Can't save element in hash"
 
+        load.
+
             
 
     def storeData(self, html):
