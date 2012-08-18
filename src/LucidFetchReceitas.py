@@ -24,7 +24,7 @@ class LucidFetchReceitas():
     
         try:
             libc = CDLL("libc.so.6")
-            load = cdll.LoadLibrary('./moduleVectorHash.so')
+            load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
         except:
             print "Can't load C module!"
 
@@ -43,10 +43,10 @@ class LucidFetchReceitas():
                 except:
                     print "Can't save element in hash"
 
-        #try:
-            #load.Py_PrintFn()
-        #except:
-            #print "Can't load C module to print elements from HashSet."
+        try:
+            load.Py_PrintFn()
+        except:
+            print "Can't load C module to print elements from HashSet."
 
         #try:
             #load.HashSetDispose()
