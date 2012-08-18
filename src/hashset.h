@@ -83,9 +83,7 @@ typedef struct {
 
   vector v;
   HashSetFreeFunction _free;
-  HashSetMapFunction mapFunction;
   HashSetCompareFunction compareFunction;
-  HashSetHashFunction hashFunction;
 } hashset;
 
 /**
@@ -128,7 +126,7 @@ typedef struct {
  */
 
 void HashSetNew(hashset *h, int elemSize, int numBuckets,
-		HashSetHashFunction hashfn, HashSetCompareFunction comparefn, HashSetFreeFunction freefn);
+		HashSetCompareFunction comparefn, HashSetFreeFunction freefn);
 
 /**
  * Function: HashSetDispose
@@ -161,17 +159,14 @@ int HashSetCount(const hashset *h);
  * Function: HashSetEnter
  * ----------------------
  * Inserts the specified element into the specified
- * hashset.  If the specified element matches an
- * element previously inserted (as far as the hash
- * and compare functions are concerned), the the
- * old element is replaced by this new element.
+ * hashset. 
  *
  * An assert is raised if the specified address is NULL, or
  * if the embedded hash function somehow computes a hash code
  * for the element that is out of the [0, numBuckets) range.
  */
 
-void HashSetEnter(hashset *h, const void *elemAddr);
+void HashSetEnter(hashset *h, const void *elemAddr, int position);
 
 /**
  * Function: HashSetLookup
@@ -189,7 +184,7 @@ void HashSetEnter(hashset *h, const void *elemAddr);
  * for the element that is out of the [0, numBuckets) range.
  */
 
-void *HashSetLookup(const hashset *h, const void *elemAddr);
+//void *HashSetLookup(const hashset *h, const void *elemAddr);
 
 /**
  * Function: HashSetMap
@@ -208,11 +203,5 @@ void *HashSetLookup(const hashset *h, const void *elemAddr);
 
 void HashSetMap(hashset *h, HashSetMapFunction mapfn, void *auxData);
 
-
-/** Support functions
-void CreateNewHashPy(int elemSize, int numBuckets);
-
-static int HashFrequency(const void *elem, int numBuckets);
-*/
 #endif
 

@@ -8,9 +8,13 @@
 #ifndef _hashset_
 #define _hashset_
 
-void CreateNewHashPy(int elemSize, int numBuckets);
+void Py_HashSetNew(int elemSize, int numBuckets);
+void Py_HashSetEnter(char item);
+void Py_PrintFn();
+void Py_HashSetDispose(hashset *h);
 static int CompareLetter(const void *elem1, const void *elem2);
 static int HashFrequency(const void *elem, int numBuckets);
-void EnterItemPy(char item);
+static void PrintString(void *elemAddr, void *auxData);
+void SortItems();
 
 #endif
