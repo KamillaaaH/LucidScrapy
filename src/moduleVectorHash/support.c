@@ -12,11 +12,13 @@
 #include <limits.h>
 #include <assert.h>
 #include <string.h>
+#include <time.h>
+#include <regex.h>
 
 /** Support functions */
 
 hashset counts;
-vector sortedCounts;
+vector vec;
 
 struct frequency {
     char s; // a particular string
@@ -62,12 +64,9 @@ static void PrintFrequency(void *elem, void *fp) {
             freq->s);
 }
 
-
 static void PrintString(void *elemAddr, void *auxData) {
     fprintf(stdout, "\n%s", (char*) elemAddr);
 }
-
-
 
 void Py_HashSetNew(int elemSize, int numBuckets) {
     HashSetNew(&counts, elemSize, numBuckets, CompareLetter, NULL);
@@ -79,10 +78,48 @@ void Py_HashSetEnter(const void *itemAddr, int position) {
 }
 
 void Py_PrintFn() {
-    fprintf(stdout, "\nHere is the contents of the table:\n");
+    fprintf(stdout, "\nHere is the content of the table:\n");
     HashSetMap(&counts, PrintString, stdout); // print contents of table
 }
 
 void Py_HashSetDispose() {
     HashSetDispose(&counts);
+}
+
+void storeData() {
+    time_t rawtime;
+    struct tm *timeinfo;
+    char buffer [80];
+
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(buffer, 80, "%d%b%y_%H:%M.csv", timeinfo);
+    puts(buffer);
+
+    FILE *fp;
+    fp = fopen(buffer, "w");
+    char *data = "{\"DESPESA\":19283921, \"RECEITAS\":1298391, \"CODIGO\": 7}";
+    if (!fp) {
+        printf("\nCan't open the file!");
+        exit(0);
+    }
+
+    fputs (data, fp) != EOF;
+    fclose (fp); // or for the paranoid: if (fclose (fOut) == EOF) rc = 0;
+    
+
+/*
+    time_t now;
+    struct tm *gmt;
+    char formatted_gmt [50];
+    now = time ( NULL );
+    gmt = localtime( &now );
+    strftime (formatted_gmt, sizeof(formatted_gmt), "%d/%m/%y.csv", gmt );
+    puts(formatted_gmt);
+    
+    FILE *fp = fopen(formatted_gmt, "w");
+*/
+    
+
 }

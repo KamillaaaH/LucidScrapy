@@ -2,18 +2,15 @@
 __author__ = "kamilla"
 __date__ = "$Aug 1, 2012 10:52:37 AM$"
 
-import time
-import mechanize
-import errno
-import os
-from bs4 import BeautifulSoup
-import ast
-import sys
-
-#The ctypes interface by default only handles Python integer, long, and string
-#data types. If you use float or something else then you must tell ctypes how
-#to convert the C function call arguments and result value.
 from ctypes import *
+import errno
+import sys
+import time
+
+import ast
+from bs4 import BeautifulSoup
+import mechanize
+import os
 #import moduleVectorHash
 
 
@@ -21,7 +18,8 @@ class LucidFetchReceitas():
     def fetch(self, BASE_URL, br):
         html = br.open(BASE_URL).get_data()
         data = ast.literal_eval(html)
-    
+        print data
+        
         try:
             libc = CDLL("libc.so.6")
             load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
@@ -35,26 +33,33 @@ class LucidFetchReceitas():
             
         position = 0
         for s in data.get('response').get('data'):
-                try:
-                    myString = c_char_p(str(s))
-                    myStringAddr = cast(myString, c_void_p)
-                    load.Py_HashSetEnter(myStringAddr, position)
-                    position = position + 1
-                except:
-                    print "Can't save element in hash"
+            try:
+                myString = c_char_p(str(s))
+                myStringAddr = cast(myString, c_void_p)
+                load.Py_HashSetEnter(myStringAddr, position)
+                position = position + 1
+            except:
+                print "Can't save element in hash"
 
-        try:
-            load.Py_PrintFn()
-        except:
-            print "Can't load C module to print elements from HashSet."
+        #try:
+            #load.Py_PrintFn()
+        #except:
+            #print "Can't load C module to print elements from HashSet."
 
         #try:
             #load.HashSetDispose()
         #except:
             #print "Can't load C module to free memory."
 
-    def storeData(self, html):
+    def storeData(self):
         self.verifyFolder("incomeToGDF")
+        try:
+            CDLL("libc.so.6")
+            load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
+        except:
+            print "Can't load C module!"
+
+        load.storeData()
         
         #soup = BeautifulSoup(html)
         #print soup.select(".colunaValor")

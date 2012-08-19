@@ -43,6 +43,7 @@ deducoes_restituicoes_receita = "http://www.transparencia.df.gov.br/_layouts/Br.
 
 var = LucidFetchReceitas.LucidFetchReceitas()
 var.fetch(receitas, br)
+var.storeData()
 #BASE_URL_UNIAO = "http://www.portaltransparencia.gov.br/PortalTransparenciaListaAcoes.asp?Exercicio=2012&SelecaoUF=1&SiglaUF=DF&NomeUF=DISTRITO%20FEDERAL&CodMun=9701&NomeMun=BRASILIA"
 #uniao = LucidFetchFromUniao.LucidFetchFromUniao()
 #uniao.fetch(BASE_URL_UNIAO, br)
