@@ -86,6 +86,22 @@ void Py_HashSetDispose() {
     HashSetDispose(&counts);
 }
 
+void *regexp(char *string, char *patrn) {
+    regex_t rgT;
+    regmatch_t match;
+    const char *p = string;
+    if (regcomp(&rgT, patrn, REG_EXTENDED) != 0) {
+        printf("\nCan't compile regex");
+        exit(0);
+    }
+    
+    while (regexec(&rgT, p, 1, &match, 0) == 0) {
+        printf("\nSearching regex...");
+        printf("\n%.*s", (int)(match.rm_eo - match.rm_so), &p[match.rm_so]);
+        p += match.rm_eo; // or p = &p[match.rm_eo];
+    }
+}
+
 void storeData() {
     time_t rawtime;
     struct tm *timeinfo;
@@ -97,29 +113,15 @@ void storeData() {
     strftime(buffer, 80, "%d%b%y_%H:%M.csv", timeinfo);
     puts(buffer);
 
-    FILE *fp;
-    fp = fopen(buffer, "w");
+    //FILE *fp;
+    //fp = fopen(buffer, "w");
     char *data = "{\"DESPESA\":19283921, \"RECEITAS\":1298391, \"CODIGO\": 7}";
-    if (!fp) {
+    /*if (!fp) {
         printf("\nCan't open the file!");
         exit(0);
-    }
-
-    fputs (data, fp) != EOF;
-    fclose (fp); // or for the paranoid: if (fclose (fOut) == EOF) rc = 0;
-    
-
-/*
-    time_t now;
-    struct tm *gmt;
-    char formatted_gmt [50];
-    now = time ( NULL );
-    gmt = localtime( &now );
-    strftime (formatted_gmt, sizeof(formatted_gmt), "%d/%m/%y.csv", gmt );
-    puts(formatted_gmt);
-    
-    FILE *fp = fopen(formatted_gmt, "w");
-*/
-    
-
+    }*/
+    char *match = regexp(data, "[[:alpha:]]+");
+    //printf("\n->%s<-\n(b=%d e=%d)\n", match, b, e);
+    //fputs(data, fp) != EOF;
+    //fclose(fp); // or for the paranoid: if (fclose (fOut) == EOF) rc = 0;
 }
