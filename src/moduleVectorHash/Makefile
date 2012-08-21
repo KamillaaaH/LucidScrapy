@@ -8,6 +8,6 @@ compile:
 	cc -shared -o $(PROG).so $(OBJS)
 	@echo "Make complete."
 
-clean :
+clean:
 	rm -f core $(PROG).so $(OBJS)
 	@echo "$(obj) files are removed."

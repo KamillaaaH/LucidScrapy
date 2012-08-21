@@ -112,15 +112,21 @@ void storeData() {
 
     strftime(buffer, 80, "%d%b%y_%H:%M.csv", timeinfo);
     puts(buffer);
-
+    int i = 0;
+    vector *vec = &counts.v;
+    
+    for(i = 0; i < vec->logLength; i++){
+	char *data = (char *)vec->elems + (i * vec->elemSize);
+        char *match = regexp(data, "[[:alpha:]]+");
+    }
     //FILE *fp;
     //fp = fopen(buffer, "w");
-    char *data = "{\"DESPESA\":19283921, \"RECEITAS\":1298391, \"CODIGO\": 7}";
+    //char *data = "{\"DESPESA\":19283921, \"RECEITAS\":1298391, \"CODIGO\": 7}";
     /*if (!fp) {
         printf("\nCan't open the file!");
         exit(0);
     }*/
-    char *match = regexp(data, "[[:alpha:]]+");
+    //char *match = regexp(data, "[[:alpha:]]+");
     //printf("\n->%s<-\n(b=%d e=%d)\n", match, b, e);
     //fputs(data, fp) != EOF;
     //fclose(fp); // or for the paranoid: if (fclose (fOut) == EOF) rc = 0;

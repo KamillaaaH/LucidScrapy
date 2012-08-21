@@ -42,7 +42,7 @@ receitas_intra_orcamentarias_capital = "http://www.transparencia.df.gov.br/_layo
 deducoes_restituicoes_receita = "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=9&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-5&_dataSource=dsReceitasPorCategoria-5&isc_metaDataPrefix=_&isc_dataFormat=json"
 
 var = LucidFetchReceitas.LucidFetchReceitas()
-#var.fetch(receitas, br)
+var.fetch(receitas, br)
 var.storeData()
 #BASE_URL_UNIAO = "http://www.portaltransparencia.gov.br/PortalTransparenciaListaAcoes.asp?Exercicio=2012&SelecaoUF=1&SiglaUF=DF&NomeUF=DISTRITO%20FEDERAL&CodMun=9701&NomeMun=BRASILIA"
 #uniao = LucidFetchFromUniao.LucidFetchFromUniao()

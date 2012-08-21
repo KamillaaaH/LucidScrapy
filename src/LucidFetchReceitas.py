@@ -6,28 +6,29 @@ from ctypes import *
 import errno
 import sys
 import time
-
 import ast
 from bs4 import BeautifulSoup
 import mechanize
 import os
-#import moduleVectorHash
+import re
 
 
 class LucidFetchReceitas():
     def fetch(self, BASE_URL, br):
         html = br.open(BASE_URL).get_data()
+        print html
+        totalRows = int(re.search('[0-9]', re.search('"totalRows":[0-9]', html).group()).group())
+        print re.split('\{"(.*?)"\}', html)
         data = ast.literal_eval(html)
-        print data
-        
+
         try:
-            libc = CDLL("libc.so.6")
             load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
         except:
             print "Can't load C module!"
 
         try:
-            load.Py_HashSetNew(sys.getsizeof(str), data.get('response').get('totalRows'))
+            #load.Py_HashSetNew(sys.getsizeof(str), data.get('response').get('totalRows'))
+            load.Py_HashSetNew(sys.getsizeof(str), totalRows)
         except:
             print "Can't load C module to create a new HashSet."
             
