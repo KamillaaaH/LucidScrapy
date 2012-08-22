@@ -18,7 +18,7 @@ class LucidFetchReceitas():
         html = br.open(BASE_URL).get_data()
         print html
         totalRows = int(re.search('[0-9]', re.search('"totalRows":[0-9]', html).group()).group())
-        print re.split('\{"(.*?)"\}', html)
+        print re.split('[A-Z]+', str(re.findall('"[A-Z]+"', html)), 5)
         data = ast.literal_eval(html)
 
         try:

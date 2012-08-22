@@ -96,8 +96,8 @@ void *regexp(char *string, char *patrn) {
     }
     
     while (regexec(&rgT, p, 1, &match, 0) == 0) {
-        printf("\nSearching regex...");
-        printf("\n%.*s", (int)(match.rm_eo - match.rm_so), &p[match.rm_so]);
+        //printf("\nSearching regex...");
+        //printf("\n%.*s", (int)(match.rm_eo - match.rm_so), &p[match.rm_so]);
         p += match.rm_eo; // or p = &p[match.rm_eo];
     }
 }
@@ -117,6 +117,7 @@ void storeData() {
     
     for(i = 0; i < vec->logLength; i++){
 	char *data = (char *)vec->elems + (i * vec->elemSize);
+        // printf("%s", data);
         char *match = regexp(data, "[[:alpha:]]+");
     }
     //FILE *fp;
