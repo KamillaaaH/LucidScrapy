@@ -10,7 +10,7 @@ import os
 import re
 
 
-class LucidFetchFromGDF():
+class LucidFetchDespesas():
     numFiles = 1
     startRow = 1
     endRow = 500

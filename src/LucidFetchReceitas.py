@@ -1,42 +1,77 @@
 # -*- coding: utf-8 *-*
-__author__="kamilla"
-__date__ ="$Aug 1, 2012 10:52:37 AM$"
+__author__ = "kamilla"
+__date__ = "$Aug 1, 2012 10:52:37 AM$"
 
-import time
-import mechanize
+from ctypes import *
 import errno
-import os
+import sys
+import time
+import ast
 from bs4 import BeautifulSoup
+import mechanize
+import os
+import re
 
 
 class LucidFetchReceitas():
-    numFiles = 1
-
     def fetch(self, BASE_URL, br):
         html = br.open(BASE_URL).get_data()
-        self.storeData(html)
-        while(True):
-            try:
-                print "\n\n ============= Getting data from page number " + str(self.getNumFiles()) + " ============="
-                nextPage = self.getNextPage(BASE_URL, html)
-                html = br.open(nextPage).get_data()
-                self.storeData(html)
-            except mechanize.HTTPError, e:
-                print str(e.code) + " - Internal Server Errror"
-                break
+        print html
+        totalRows = int(re.search('[0-9]', re.search('"totalRows":[0-9]', html).group()).group())
+        print re.split('[A-Z]+', str(re.findall('"[A-Z]+"', html)), 5)
+        data = ast.literal_eval(html)
 
-    def storeData(self, html):
-        self.verifyFolder("transferedToGDF")
-        soup = BeautifulSoup(html)
-        print soup.select(".colunaValor")
         try:
-            f = open('./transferedToGDF/transferedToGDF' + str(self.getNumFiles()) + self.getDateTime(), 'w')
-            for s in html:
-                f.write(s)
-            f.close()
-            self.setNumFiles(self.getNumFiles() + 1)
-        except IOError:
-            print "Error: can\'t find file or write data"
+            load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
+        except:
+            print "Can't load C module!"
+
+        try:
+            #load.Py_HashSetNew(sys.getsizeof(str), data.get('response').get('totalRows'))
+            load.Py_HashSetNew(sys.getsizeof(str), totalRows)
+        except:
+            print "Can't load C module to create a new HashSet."
+            
+        position = 0
+        for s in data.get('response').get('data'):
+            try:
+                myString = c_char_p(str(s))
+                myStringAddr = cast(myString, c_void_p)
+                load.Py_HashSetEnter(myStringAddr, position)
+                position = position + 1
+            except:
+                print "Can't save element in hash"
+
+        #try:
+            #load.Py_PrintFn()
+        #except:
+            #print "Can't load C module to print elements from HashSet."
+
+        #try:
+            #load.HashSetDispose()
+        #except:
+            #print "Can't load C module to free memory."
+
+    def storeData(self):
+        self.verifyFolder("incomeToGDF")
+        try:
+            CDLL("libc.so.6")
+            load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
+        except:
+            print "Can't load C module!"
+
+        load.storeData()
+        
+        #soup = BeautifulSoup(html)
+        #print soup.select(".colunaValor")
+        #try:
+            #f = open('./transferedToGDF/transferedToGDF' + str(self.getNumFiles()) + self.getDateTime(), 'w')
+            #for s in html:
+                #f.write(s)
+            #f.close()
+            #self.setNumFiles(self.getNumFiles() + 1)
+        #except IOError:
+            #print "Error: can\'t find file or write data"
 
 
     def verifyFolder(self, pathName):

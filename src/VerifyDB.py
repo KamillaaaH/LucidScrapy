@@ -2,55 +2,41 @@
 __author__ = "kamilla"
 __date__ = "$Aug 11, 2012 12:06:02 PM$"
 
-from pymongo import Connection
 
 class VerifyDB():
 
-    def verifyDB(self):
-        con = Connection('localhost', 27017)
-        db = self.verifyDBExistence(con, "test_database")
+    def verifyDB(self, con):
+        db = self.verifyDBExistence(con)
         print "Verify DB existence"
         if db:
             print "Database already created: " + str(db)
         else:
-            db = self.createDB(con, "test_database")
-
-        print db.collection_names()
+            db = self.createDB(con)
 
             
-    def verifyDBExistence(self, con, dbName):
+    def verifyDBExistence(self, con):
         for s in con.database_names():
-            if s == dbName:
-                return con.dbName
+            if s == "test_database":
+                return con.test_database
             else:
                 return None
                 
 
-    def verifyCollections(self, db):
+    def verifyCollection(self, db, nameCollection):
         for s in db.collection_names():
-            if s == "receitas":
-                print "Collection \'receitas\' already created"
-            elif s == "despesas":
-                print "Collection \'despesas\' already created"
+            if s == nameCollection:
+                print "Collection " + s + " already created."
+                return True
             else:
-                self.createCollections()
+                return None
         
 
-    def createDB(self, con, dbName):
+    def createDB(self, con):
         try:
-            db = con.dbName
+            db = con.test_database
             print "Database created!"
             return db
         except:
             print "Can't create database!"
-            
-            
-    def createCollection(self, db, collectionName):
-        try:
-            coll = db.collectionName
-            print "Collection created!"
-            return coll
-        except:
-            print "Can't create collection!"
 
             
