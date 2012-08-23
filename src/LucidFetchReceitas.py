@@ -16,9 +16,9 @@ import re
 class LucidFetchReceitas():
     def fetch(self, BASE_URL, br):
         html = br.open(BASE_URL).get_data()
-        print html
+        #print html
         totalRows = int(re.search('[0-9]', re.search('"totalRows":[0-9]', html).group()).group())
-        print re.split('[A-Z]+', str(re.findall('"[A-Z]+"', html)), 5)
+        print re.findall('("[A-Z]+"){5}', html)
         data = ast.literal_eval(html)
 
         try:
