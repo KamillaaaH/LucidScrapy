@@ -74,7 +74,6 @@ void Py_HashSetNew(int elemSize, int numBuckets) {
 
 void Py_HashSetEnter(const void *itemAddr, int position) {
     HashSetEnter(&counts, itemAddr, position);
-
 }
 
 void Py_PrintFn() {

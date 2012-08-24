@@ -1,5 +1,7 @@
+##All comments, class names, function names, method names and everything more have to be in English
 1. Use regex to match correct data to put in CSV files
 2. Create CSV file with fetched data
 3. Integrate with JavaScript to use HighCharts -> http://www.highcharts.com/
 4. Distribute tasks using threads
-5. Document code using Doxygen
+5. Document code using Doxygen - don't forget to use the correct specifications -> http://www.stack.nl/~dimitri/doxygen/docblocks.html#pythonblocks
+
