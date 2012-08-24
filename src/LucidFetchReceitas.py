@@ -23,40 +23,41 @@ import re
 #  do Distrito Federal and save this in CSV format
 class LucidFetchReceitas():
     
-    ## @var (position)
+    ## @position
     #  Item's position in hashtable
     position = 0
 
 
     ## Uses ctypes to try to load the C module.
+    #  @load is the cdll referency that loads dynamic link libraries.
     try:
         load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
     except:
         print "Can't load C module!"
     
-    ## @fn Function fetch(self, BASE_URL, br) request data and categorize it
-    #  @param <BASE_URL> {Is the link for get data}
-    #  @param <br> {Is the browser from mechanizer}
+    ## @fn fetch(self, BASE_URL, br) request data and categorize it
+    #  @param BASE_URL is the link for get data
+    #  @param br Is the browser from mechanizer
     def fetch(self, BASE_URL, br):
         
-        ## @var (html)
+        ## @html
         #  is the result from the request to the BASE_URL
         html = br.open(BASE_URL).get_data()
         #print html
 
         ## Tries to call a function from C module to create a new hashset
         #  The hashset created get follow parameters:
-        #   @param <sys.getsizeof(str)> {Size of some string in Python}
-        #   @param <totalRows> {Number of rows from file that was downloaded}
+        #   @sys.getsizeof(str) is the size of some string in Python
+        #   @totalRows is the number of rows from file that was downloaded
         try:
-            ## @var (totalRows)
+            ## @totalRows
             #  is the number of rows from file that was downloaded
             totalRows = int(re.search('[0-9]', re.search('"totalRows":[0-9]', html).group()).group())
-            self.load.Py_HashSetNew(sys.getsizeof(str), totalRows)
+            self.load.Py_HashSetNew(sys.getsizeof(str), totalRows +1)
         except:
             print "Can't load C module to create a new HashSet."
 
-        ## @var (labels)
+        ## @labels
         #  are the labels from file that was download
         #  it iterates over the result and gets the labels
         labels = []
@@ -65,37 +66,54 @@ class LucidFetchReceitas():
             if not any(text in title for title in labels):
                 labels.append(text)
 
-        ## Convert labels into string and try to put it into the getPosition
+        labels.append("ID")
+        ## Convert @labels into string and try to put it into the getPosition
         #  in hashtable
         self.putItemInHash(', '.join(labels), self.getPosition())
-
+        #print self.getPosition()
         
-        ## @var (rows)
+        ## @rows
         #  Are the rows from file that was download
         #  it iterates over the result and gets the labels
         rows = []
-        result = re.findall('(:\"[\d\w\s]+"|:[\d\w\s.]+)', html)
+        result = re.findall('(:\"[\d\w\s\-r"/"r"Ç"r"Õ"r"Á" ]+"|:[\d\w\s.\-r"/"r"Ç"r"Õ"r"Á" ]+)', html)
+        #print result
+        i = 0
+        numItemsInRow = 0
+        #print result[33]
+        #print len(result)
         for i in range(3, len(result)):
-            rows.append(re.search('[\d\w\s.]+', result[i]).group())
+            rows.append(re.search('[^":]+', result[i]).group())
+            #print rows
+            #print " i = " + str(i)
+            #print " len = "+ str(len(rows))
+            #print rows
+            numItemsInRow = numItemsInRow + 1
+            if numItemsInRow == 6:
+                #print ', '.join(rows)
+                #print "put in position "+str(self.getPosition())
+                self.putItemInHash(', '.join(rows), self.getPosition())
+                rows = []
+                numItemsInRow = 0
+                i = i + 1
 
-        #print rows
-        #print ', '.join(re.findall('[\d\w\s.]+',result[i]))
-        #print ', '.join(rows)
+        
+        self.load.storeData()
 
-        #data = ast.literal_eval(html)
-
-        try:
-            self.load.Py_PrintFn()
-        except:
-            print "Can't load C module to print elements from HashSet."
+        #try:
+            #self.load.Py_PrintFn()
+        #except:
+            #print "Can't load C module to print elements from HashSet."
 
         try:
             self.load.HashSetDispose()
         except:
             print "Can't load C module to free memory."
 
+    ## @fn putItemIhHash(self, item, position) request data and categorize it
+    #  @param @item is the item to put in hashtable
+    #  @param @position is the position that the item is pushed
     def putItemInHash(self, item, position):
-        print type(item)
         try:
             itemChar = c_char_p(item)
             itemVoidPtr = cast(itemChar, c_void_p)

@@ -7,6 +7,21 @@
 \item 
 def \hyperlink{classLucidFetchReceitas_1_1LucidFetchReceitas_ae9a10ef27856a0ef1e898a5820874f8e}{fetch}
 \item 
+\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_a350099e21da5e2280a3db25f86bd2356}{
+def {\bfseries putItemInHash}}
+\label{classLucidFetchReceitas_1_1LucidFetchReceitas_a350099e21da5e2280a3db25f86bd2356}
+
+\item 
+\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_a2469bf42882489bd731602096564d877}{
+def {\bfseries setPosition}}
+\label{classLucidFetchReceitas_1_1LucidFetchReceitas_a2469bf42882489bd731602096564d877}
+
+\item 
+\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_ab67ca3875cfc7633e8d1e63ae8cfe45d}{
+def {\bfseries getPosition}}
+\label{classLucidFetchReceitas_1_1LucidFetchReceitas_ab67ca3875cfc7633e8d1e63ae8cfe45d}
+
+\item 
 \hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_acdc9d9d71744ef3660b7b5b9052372d3}{
 def {\bfseries storeData}}
 \label{classLucidFetchReceitas_1_1LucidFetchReceitas_acdc9d9d71744ef3660b7b5b9052372d3}
@@ -16,35 +31,25 @@ def {\bfseries storeData}}
 def {\bfseries verifyFolder}}
 \label{classLucidFetchReceitas_1_1LucidFetchReceitas_a404c9595bca7b361c4e12bf5c2478c55}
 
-\item 
-\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_a382591947af9088eb20a3a29aa931a78}{
-def {\bfseries getDateTime}}
-\label{classLucidFetchReceitas_1_1LucidFetchReceitas_a382591947af9088eb20a3a29aa931a78}
-
-\item 
-\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_a0f409f06b0ca4d43b05ccd1096055716}{
-def {\bfseries getNumFiles}}
-\label{classLucidFetchReceitas_1_1LucidFetchReceitas_a0f409f06b0ca4d43b05ccd1096055716}
-
-\item 
-\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_a219d0b961b45b996e6237af8bfb389e2}{
-def {\bfseries setNumFiles}}
-\label{classLucidFetchReceitas_1_1LucidFetchReceitas_a219d0b961b45b996e6237af8bfb389e2}
-
-\item 
-\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_a54f88f046c6683872704b763e80ebc61}{
-def {\bfseries getNextPage}}
-\label{classLucidFetchReceitas_1_1LucidFetchReceitas_a54f88f046c6683872704b763e80ebc61}
-
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_a75a0ddd04e7c307e0d58eca22f1eb5f5}{
-{\bfseries numFiles}}
-\label{classLucidFetchReceitas_1_1LucidFetchReceitas_a75a0ddd04e7c307e0d58eca22f1eb5f5}
+\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_a58b8064ebe2923db1b72127414808a03}{
+{\bfseries position}}
+\label{classLucidFetchReceitas_1_1LucidFetchReceitas_a58b8064ebe2923db1b72127414808a03}
 
 \end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_a06eb97dca016a255e17357f638833353}{
+int \hyperlink{classLucidFetchReceitas_1_1LucidFetchReceitas_a06eb97dca016a255e17357f638833353}{position} = 0}
+\label{classLucidFetchReceitas_1_1LucidFetchReceitas_a06eb97dca016a255e17357f638833353}
+
+\begin{DoxyCompactList}\small\item\em Item's position in hashtable \end{DoxyCompactList}\item 
+tuple \hyperlink{classLucidFetchReceitas_1_1LucidFetchReceitas_afde7b36b1c1f6e43cf550042e9219d81}{load} = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
+\begin{DoxyCompactList}\small\item\em Uses ctypes to try to load the C module. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Member Function Documentation}
@@ -63,10 +68,22 @@ def {\bfseries getNextPage}}
 \begin{DoxyParams}{Parameters}
 {\em BASE\_\-URL} & is the link for get data \\
 \hline
-{\em br} & is the browser from mechanizer \\
+{\em br} & Is the browser from mechanizer \\
 \hline
 \end{DoxyParams}
 
+
+\subsection{Member Data Documentation}
+\hypertarget{classLucidFetchReceitas_1_1LucidFetchReceitas_afde7b36b1c1f6e43cf550042e9219d81}{
+\index{LucidFetchReceitas::LucidFetchReceitas@{LucidFetchReceitas::LucidFetchReceitas}!load@{load}}
+\index{load@{load}!LucidFetchReceitas::LucidFetchReceitas@{LucidFetchReceitas::LucidFetchReceitas}}
+\subsubsection[{load}]{\setlength{\rightskip}{0pt plus 5cm}tuple LucidFetchReceitas::LucidFetchReceitas::load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}
+\label{classLucidFetchReceitas_1_1LucidFetchReceitas_afde7b36b1c1f6e43cf550042e9219d81}
+
+
+Uses ctypes to try to load the C module. 
+
+is the cdll referency that loads dynamic link libraries. 
 
 The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
 \item 

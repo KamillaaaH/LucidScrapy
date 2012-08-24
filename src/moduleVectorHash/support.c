@@ -73,6 +73,7 @@ void Py_HashSetNew(int elemSize, int numBuckets) {
 }
 
 void Py_HashSetEnter(const void *itemAddr, int position) {
+    //printf("\nModule C position = %d\n", position);
     HashSetEnter(&counts, itemAddr, position);
 }
 
@@ -85,7 +86,7 @@ void Py_HashSetDispose() {
     HashSetDispose(&counts);
 }
 
-void *regexp(char *string, char *patrn) {
+/*void *regexp(char *string, char *patrn) {
     regex_t rgT;
     regmatch_t match;
     const char *p = string;
@@ -99,7 +100,7 @@ void *regexp(char *string, char *patrn) {
         //printf("\n%.*s", (int)(match.rm_eo - match.rm_so), &p[match.rm_so]);
         p += match.rm_eo; // or p = &p[match.rm_eo];
     }
-}
+}*/
 
 void storeData() {
     time_t rawtime;
@@ -110,15 +111,24 @@ void storeData() {
     timeinfo = localtime(&rawtime);
 
     strftime(buffer, 80, "%d%b%y_%H:%M.csv", timeinfo);
-    puts(buffer);
+
+    FILE *fp = fopen(buffer, "w");
+    if (!fp) {
+        printf("\nCan't open the file");
+        exit(0);
+    }
+    //puts(buffer);
     int i = 0;
     vector *vec = &counts.v;
-    
-    for(i = 0; i < vec->logLength; i++){
-	char *data = (char *)vec->elems + (i * vec->elemSize);
-        // printf("%s", data);
-        char *match = regexp(data, "[[:alpha:]]+");
+    //printf("\n In storeData: ");
+    for (i = 0; i < vec->logLength; i++) {
+        char *data = (char *) vec->elems + (i * vec->elemSize);
+        printf("\n%s", data);
+        fprintf(fp, "\n%s", data);
+        //char *match = regexp(data, "[[:alpha:]]+");
     }
+
+    fclose(fp);
     //FILE *fp;
     //fp = fopen(buffer, "w");
     //char *data = "{\"DESPESA\":19283921, \"RECEITAS\":1298391, \"CODIGO\": 7}";
