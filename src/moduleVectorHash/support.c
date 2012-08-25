@@ -102,17 +102,20 @@ void Py_HashSetDispose() {
     }
 }*/
 
-void storeData() {
+void storeData(char *categoria) {
     time_t rawtime;
     struct tm *timeinfo;
     char buffer [80];
+    char *filename;
 
     time(&rawtime);
     timeinfo = localtime(&rawtime);
 
-    strftime(buffer, 80, "%d%b%y_%H:%M.csv", timeinfo);
+    strftime(buffer, 80, "_%d%b%y_%H:%M.csv", timeinfo);
 
-    FILE *fp = fopen(buffer, "w");
+    filename = strcat(categoria, buffer);
+   
+    FILE *fp = fopen(filename, "w");
     if (!fp) {
         printf("\nCan't open the file");
         exit(0);

@@ -2,6 +2,28 @@
 __author__="kamilla"
 __date__ ="$Aug 1, 2012 10:52:37 AM$"
 
+## @author Kamilla H. Crozara
+#  @date August, 2012
+#  @version 1.0
+#  @filename LucidScrapy.py
+
+## \mainpage Lucid Scrapy Index
+#
+# \section intro_sec Introduction
+#
+# This is a project about government open data that
+# uses Python to get information about expenses from Governo do
+# Distrito Federal (Brazil).
+#
+# \section install_sec Installation
+#
+# \subsection step1 Step 1: Opening the box
+#
+# etc...
+#/
+
+
+
 import LucidFetchReceitas
 import LucidFetchDespesas
 import mechanize
@@ -42,7 +64,7 @@ receitas_intra_orcamentarias_capital = "http://www.transparencia.df.gov.br/_layo
 deducoes_restituicoes_receita = "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=9&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-5&_dataSource=dsReceitasPorCategoria-5&isc_metaDataPrefix=_&isc_dataFormat=json"
 
 var = LucidFetchReceitas.LucidFetchReceitas()
-var.fetch(receitas, br)
+var.fetch(deducoes_restituicoes_receita, br, "deducoes_restituicoes_receita")
 var.storeData()
 #BASE_URL_UNIAO = "http://www.portaltransparencia.gov.br/PortalTransparenciaListaAcoes.asp?Exercicio=2012&SelecaoUF=1&SiglaUF=DF&NomeUF=DISTRITO%20FEDERAL&CodMun=9701&NomeMun=BRASILIA"
 #uniao = LucidFetchFromUniao.LucidFetchFromUniao()

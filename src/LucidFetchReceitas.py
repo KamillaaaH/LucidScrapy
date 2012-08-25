@@ -3,6 +3,7 @@
 ## @author Kamilla H. Crozara
 #  @date August, 2012
 #  @version 1.0
+#  @filename LucidFetchReceitas.py
 
 __author__ = "kamilla"
 __date__ = "$Aug 1, 2012 10:52:37 AM$"
@@ -36,9 +37,9 @@ class LucidFetchReceitas():
         print "Can't load C module!"
     
     ## @fn fetch(self, BASE_URL, br) request data and categorize it
-    #  @param BASE_URL is the link for get data
-    #  @param br Is the browser from mechanizer
-    def fetch(self, BASE_URL, br):
+    #  @param [BASE_URL] is the link for get data
+    #  @param [br] Is the browser from mechanizer
+    def fetch(self, BASE_URL, br, categoria):
         
         ## @html
         #  is the result from the request to the BASE_URL
@@ -76,7 +77,7 @@ class LucidFetchReceitas():
         #  Are the rows from file that was download
         #  it iterates over the result and gets the labels
         rows = []
-        result = re.findall('(:\"[\d\w\s\-r"/"r"Ç"r"Õ"r"Á" ]+"|:[\d\w\s.\-r"/"r"Ç"r"Õ"r"Á" ]+)', html)
+        result = re.findall('(:\"[\d\w\s\-r"/"r"Ç"r"Õ"r"Á"r"Ê"r"É"r"Ã" ]+"|:[\d\w\s.\-r"/"r"Ç"r"Õ"r"Á"r"Ê""r"É"r"Ã" ]+)', html)
         #print result
         i = 0
         numItemsInRow = 0
@@ -89,7 +90,7 @@ class LucidFetchReceitas():
             #print " len = "+ str(len(rows))
             #print rows
             numItemsInRow = numItemsInRow + 1
-            if numItemsInRow == 6:
+            if numItemsInRow == len(labels):
                 #print ', '.join(rows)
                 #print "put in position "+str(self.getPosition())
                 self.putItemInHash(', '.join(rows), self.getPosition())
@@ -98,7 +99,7 @@ class LucidFetchReceitas():
                 i = i + 1
 
         
-        self.load.storeData()
+        self.load.storeData(categoria)
 
         #try:
             #self.load.Py_PrintFn()
@@ -111,8 +112,8 @@ class LucidFetchReceitas():
             print "Can't load C module to free memory."
 
     ## @fn putItemIhHash(self, item, position) request data and categorize it
-    #  @param @item is the item to put in hashtable
-    #  @param @position is the position that the item is pushed
+    #  @param [item] is the item to put in hashtable
+    #  @param [position] is the position that the item is pushed
     def putItemInHash(self, item, position):
         try:
             itemChar = c_char_p(item)
@@ -129,15 +130,17 @@ class LucidFetchReceitas():
     def getPosition(self):
         return self.position
 
-    def storeData(self):
-        self.verifyFolder("incomeToGDF")
+    def storeData(self, categoria):
+        categoriaChar = c_char_p(categoria)
+        self.load.storeData(categoriaChar)
+
+        #self.verifyFolder("incomeToGDF")
         #try:
             #CDLL("libc.so.6")
             #load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
         #except:
             #print "Can't load C module!"
-
-        self.load.storeData()
+        
         
         #soup = BeautifulSoup(html)
         #print soup.select(".colunaValor")
