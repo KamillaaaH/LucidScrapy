@@ -4,4 +4,5 @@
 3. Integrate with JavaScript to use HighCharts -> http://www.highcharts.com/
 4. Distribute tasks using threads
 5. Document code using Doxygen - don't forget to use the correct specifications -> http://www.stack.nl/~dimitri/doxygen/docblocks.html#pythonblocks
+6. Use threads to get fetch serialization for all links that were given for LucidFetchReceitas
 
