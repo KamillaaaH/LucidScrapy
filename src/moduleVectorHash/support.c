@@ -69,6 +69,7 @@ static void PrintString(void *elemAddr, void *auxData) {
 }
 
 void Py_HashSetNew(int elemSize, int numBuckets) {
+    //printf("\nCreate new hashset");
     HashSetNew(&counts, elemSize, numBuckets, CompareLetter, NULL);
 }
 
@@ -84,6 +85,26 @@ void Py_PrintFn() {
 
 void Py_HashSetDispose() {
     HashSetDispose(&counts);
+}
+
+FILE *getFilePointer(char *categoria){
+    time_t rawtime;
+    struct tm *timeinfo;
+    char buffer [80];
+    char *filename;
+
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(buffer, 80, "_%d%b%y_%H:%M.csv", timeinfo);
+
+    filename = strcat(categoria, buffer);
+    FILE *fp = fopen(filename, "w");
+    if (!fp) {
+        printf("\nCan't open the file");
+        exit(0);
+    }
+    return fp;
 }
 
 /*void *regexp(char *string, char *patrn) {
@@ -102,7 +123,8 @@ void Py_HashSetDispose() {
     }
 }*/
 
-void storeData(char *categoria) {
+void storeData(FILE *fp) {
+    /*printf("\nLet's store it 2 ");
     time_t rawtime;
     struct tm *timeinfo;
     char buffer [80];
@@ -119,28 +141,13 @@ void storeData(char *categoria) {
     if (!fp) {
         printf("\nCan't open the file");
         exit(0);
-    }
-    //puts(buffer);
+    }*/
     int i = 0;
     vector *vec = &counts.v;
-    //printf("\n In storeData: ");
     for (i = 0; i < vec->logLength; i++) {
         char *data = (char *) vec->elems + (i * vec->elemSize);
-        printf("\n%s", data);
         fprintf(fp, "\n%s", data);
-        //char *match = regexp(data, "[[:alpha:]]+");
     }
 
     fclose(fp);
-    //FILE *fp;
-    //fp = fopen(buffer, "w");
-    //char *data = "{\"DESPESA\":19283921, \"RECEITAS\":1298391, \"CODIGO\": 7}";
-    /*if (!fp) {
-        printf("\nCan't open the file!");
-        exit(0);
-    }*/
-    //char *match = regexp(data, "[[:alpha:]]+");
-    //printf("\n->%s<-\n(b=%d e=%d)\n", match, b, e);
-    //fputs(data, fp) != EOF;
-    //fclose(fp); // or for the paranoid: if (fclose (fOut) == EOF) rc = 0;
 }

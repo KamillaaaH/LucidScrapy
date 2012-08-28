@@ -22,15 +22,71 @@ __date__ ="$Aug 1, 2012 10:52:37 AM$"
 # etc...
 #/
 
-
-
 import LucidFetchReceitas
 import LucidFetchDespesas
+from ctypes import *
 import mechanize
 import cookielib
-import VerifyDB
-from pymongo import Connection
-import json
+import threading
+import Queue
+
+hosts = {'receitas': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Geral&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-0&_dataSource=dsReceitasPorCategoria-0&isc_metaDataPrefix=_&isc_dataFormat=json",
+         'receitas_correntes': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=1&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-1&_dataSource=dsReceitasPorCategoria-1&isc_metaDataPrefix=_&isc_dataFormat=json",
+         'receitas_capital': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=2&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-2&_dataSource=dsReceitasPorCategoria-2&isc_metaDataPrefix=_&isc_dataFormat=json",
+         'receitas_intra_orcamentarias_correntes': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=7&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-3&_dataSource=dsReceitasPorCategoria-3&isc_metaDataPrefix=_&isc_dataFormat=json",
+         'receitas_intra_orcamentarias_capital': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=8&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-4&_dataSource=dsReceitasPorCategoria-4&isc_metaDataPrefix=_&isc_dataFormat=json",
+         'deducoes_restituicoes_receita': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=9&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-5&_dataSource=dsReceitasPorCategoria-5&isc_metaDataPrefix=_&isc_dataFormat=json"}
+
+queue = Queue.Queue()
+threadLock = threading.Lock()
+out_queue = Queue.Queue()
+
+## Uses ctypes to try to load the C module.
+#  @load is the cdll referency that loads dynamic link libraries.
+try:
+    load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
+except:
+    print "Can't load C module!"
+
+class ThreadUrl(threading.Thread):
+    def __init__(self, queue, out_queue):
+        threading.Thread.__init__(self)
+        self.queue = queue
+        self.out_queue = out_queue
+        
+    def run(self):
+        while True:
+            host = self.queue.get()
+            br = getBrowser()
+            ## @data
+            #  is the result from the request to the urls in hosts
+            data = br.open(host[1]).get_data()
+            chunk = {host[0]: data}
+            self.out_queue.put(chunk)
+            self.queue.task_done()
+
+
+class DatamineThread(threading.Thread):
+    def __init__(self, out_queue):
+        threading.Thread.__init__(self)
+        self.out_queue = out_queue
+
+    def run(self):
+        while True:
+            #grabs host from queue
+            chunk = self.out_queue.get()
+          
+            fetchReceitas = LucidFetchReceitas.LucidFetchReceitas()
+
+            fetchReceitas.fetch(', '.join(chunk.keys()), str(chunk.values()))
+            
+            #load.storeData(load.getFilePointer(', '.join(chunk.keys())))
+            #load.storeData(', '.join(chunk.keys()))
+
+            #fetchReceitas.HashSetDispose()
+            
+            self.out_queue.task_done()
+            
 
 def getBrowser():
         # Browser
@@ -55,72 +111,26 @@ def getBrowser():
         return br
 
 
-br = getBrowser()
-receitas = "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Geral&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-0&_dataSource=dsReceitasPorCategoria-0&isc_metaDataPrefix=_&isc_dataFormat=json"
-receitas_correntes = "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=1&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-1&_dataSource=dsReceitasPorCategoria-1&isc_metaDataPrefix=_&isc_dataFormat=json"
-receitas_capital = "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=2&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-2&_dataSource=dsReceitasPorCategoria-2&isc_metaDataPrefix=_&isc_dataFormat=json"
-receitas_intra_orcamentarias_correntes = "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=7&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-3&_dataSource=dsReceitasPorCategoria-3&isc_metaDataPrefix=_&isc_dataFormat=json"
-receitas_intra_orcamentarias_capital = "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=8&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-4&_dataSource=dsReceitasPorCategoria-4&isc_metaDataPrefix=_&isc_dataFormat=json"
-deducoes_restituicoes_receita = "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=9&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-5&_dataSource=dsReceitasPorCategoria-5&isc_metaDataPrefix=_&isc_dataFormat=json"
+def main():
 
-var = LucidFetchReceitas.LucidFetchReceitas()
-var.fetch(deducoes_restituicoes_receita, br, "deducoes_restituicoes_receita")
-var.storeData()
-#BASE_URL_UNIAO = "http://www.portaltransparencia.gov.br/PortalTransparenciaListaAcoes.asp?Exercicio=2012&SelecaoUF=1&SiglaUF=DF&NomeUF=DISTRITO%20FEDERAL&CodMun=9701&NomeMun=BRASILIA"
-#uniao = LucidFetchFromUniao.LucidFetchFromUniao()
-#uniao.fetch(BASE_URL_UNIAO, br)
+    #spawn a pool of threads, and pass them queue instance
+    for i in range(5):
+        t = ThreadUrl(queue, out_queue)
+        t.setDaemon(True)
+        t.start()
 
-#BASE_URL_GDF = "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCredor&_dataSource=dsDespesasOrgaoCredor&isc_metaDataPrefix=_&isc_dataFormat=json"
-#gdf = LucidFetchFromGDF.LucidFetchFromGDF()
-#gdf.fetch(BASE_URL_GDF, br)
+    #populate queue with data
+    for host in hosts.items():
+        queue.put(host)
 
+    for i in range(5):
+        dt = DatamineThread(out_queue)
+        dt.setDaemon(True)
+        dt.start()
 
-#con = Connection('localhost', 27017)
-
-
-
-#db = VerifyDB.VerifyDB()
-#db.verifyDB(con)
-
-
-#try:
-    #db = con.test_receita
-    #receitas = db.test_tipo_receita
-#except:
-    #print "ERRR 1"
-
-#dict = ast.literal_eval(html)
-#for s in dict.get('response').get('data'):
-    #receita = {'codigo':s['CODIGO'], 'descricao': s['DESCRICAO'], 'prevista': s['PREVISTA'], 'realizada': s['REALIZADA']}
-
-
-#db = con.test_receita
-#receitas = db.test_tipo_receita
-
-#print receitas.count()
-
-
-
-#jsonFile = json.JSONDecoder().decode(html)
-#print type(jsonFile)
-#f = open('test', 'w')
-#f.write(html)
-
-#decode = ast.literal_eval(html)
-
-
-
-#my_dict = {}
-
-#for item in html.split(','):
-    #key,value = item.split(':')
-    #if my_dict.get( key ):
-        #my_dict[ key ] += int( value )
-    #else:
-        #my_dict[ key ] = int( value )
-
-#print my_dict
-
-
-
-
+    #wait on the queue until everything has been processed
+    queue.join()
+    out_queue.join()
+  
+    
+main()

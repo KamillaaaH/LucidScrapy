@@ -12,7 +12,6 @@ from ctypes import *
 import errno
 import sys
 import time
-
 import ast
 from bs4 import BeautifulSoup
 import mechanize
@@ -39,22 +38,16 @@ class LucidFetchReceitas():
     ## @fn fetch(self, BASE_URL, br) request data and categorize it
     #  @param [BASE_URL] is the link for get data
     #  @param [br] Is the browser from mechanizer
-    def fetch(self, BASE_URL, br, categoria):
-        
-        ## @html
-        #  is the result from the request to the BASE_URL
-        html = br.open(BASE_URL).get_data()
-        #print html
-
+    def fetch(self, categoria, html):
         ## Tries to call a function from C module to create a new hashset
-        #  The hashset created get follow parameters:
+        #  The hashset created gets follow parameters:
         #   @sys.getsizeof(str) is the size of some string in Python
         #   @totalRows is the number of rows from file that was downloaded
         try:
             ## @totalRows
             #  is the number of rows from file that was downloaded
             totalRows = int(re.search('[0-9]', re.search('"totalRows":[0-9]', html).group()).group())
-            self.load.Py_HashSetNew(sys.getsizeof(str), totalRows +1)
+            self.load.Py_HashSetNew(sys.getsizeof(str), totalRows + 1)
         except:
             print "Can't load C module to create a new HashSet."
 
@@ -68,6 +61,8 @@ class LucidFetchReceitas():
                 labels.append(text)
 
         labels.append("ID")
+        
+        print labels
         ## Convert @labels into string and try to put it into the getPosition
         #  in hashtable
         self.putItemInHash(', '.join(labels), self.getPosition())
@@ -78,38 +73,21 @@ class LucidFetchReceitas():
         #  it iterates over the result and gets the labels
         rows = []
         result = re.findall('(:\"[\d\w\s\-r"/"r"Ç"r"Õ"r"Á"r"Ê"r"É"r"Ã" ]+"|:[\d\w\s.\-r"/"r"Ç"r"Õ"r"Á"r"Ê""r"É"r"Ã" ]+)', html)
-        #print result
+       
         i = 0
         numItemsInRow = 0
-        #print result[33]
-        #print len(result)
         for i in range(3, len(result)):
             rows.append(re.search('[^":]+', result[i]).group())
-            #print rows
-            #print " i = " + str(i)
-            #print " len = "+ str(len(rows))
-            #print rows
             numItemsInRow = numItemsInRow + 1
             if numItemsInRow == len(labels):
-                #print ', '.join(rows)
-                #print "put in position "+str(self.getPosition())
                 self.putItemInHash(', '.join(rows), self.getPosition())
+                print rows
                 rows = []
                 numItemsInRow = 0
                 i = i + 1
 
-        
-        self.load.storeData(categoria)
-
-        #try:
-            #self.load.Py_PrintFn()
-        #except:
-            #print "Can't load C module to print elements from HashSet."
-
-        try:
-            self.load.HashSetDispose()
-        except:
-            print "Can't load C module to free memory."
+        self.load.storeData(self.load.getFilePointer(categoria))
+                
 
     ## @fn putItemIhHash(self, item, position) request data and categorize it
     #  @param [item] is the item to put in hashtable
@@ -123,36 +101,22 @@ class LucidFetchReceitas():
         except:
             print "Can't save element in hash"
 
-
     def setPosition(self, _position):
         self.position = _position
 
     def getPosition(self):
         return self.position
 
+    def HashSetDispose(self):
+        try:
+            self.load.HashSetDispose()
+        except:
+            print "Can't load C module to free memory."
+
     def storeData(self, categoria):
+        print "Let's store it"
         categoriaChar = c_char_p(categoria)
         self.load.storeData(categoriaChar)
-
-        #self.verifyFolder("incomeToGDF")
-        #try:
-            #CDLL("libc.so.6")
-            #load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
-        #except:
-            #print "Can't load C module!"
-        
-        
-        #soup = BeautifulSoup(html)
-        #print soup.select(".colunaValor")
-        #try:
-            #f = open('./transferedToGDF/transferedToGDF' + str(self.getNumFiles()) + self.getDateTime(), 'w')
-            #for s in html:
-                #f.write(s)
-            #f.close()
-            #self.setNumFiles(self.getNumFiles() + 1)
-        #except IOError:
-            #print "Error: can\'t find file or write data"
-
 
     def verifyFolder(self, pathName):
         try:
@@ -161,17 +125,3 @@ class LucidFetchReceitas():
         except IOError as e:
             print "I/O error({0}): {1}".format(e.errno, e.strerror)
             return "Maybe you don't have permission to access this folder"
-
-    #def getDateTime(self):
-        #localtime = time.asctime(time.localtime(time.time()))
-        #return str(localtime)
-
-    #def getNumFiles(self):
-        #return self.numFiles
-
-    #def setNumFiles(self, numFiles):
-        #self.numFiles = numFiles
-
-    #def getNextPage(self, BASE_URL, html):
-        #nextPage = BASE_URL + "&Pagina=" + str(self.getNumFiles())
-        #return nextPage
