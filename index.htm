@@ -1,63 +1,53 @@
-<!DOCTYPE HTML>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Meu primeiro gráfico</title>
+		<title>teste</title>
 		
 		<!Incluindo JQuery>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		
+		<script type="text/javascript" src="./js/highcharts.js"></script>
+	
 		<!Inicializando o Gráfico>
 		<script type="text/javascript">
-alert("antes do ready");
-$(document).ready(
-	function(){
 
-		var options = {
-		    chart: {
-			renderTo: 'container',
-			defaultSeriesType: 'column'
-		    },
-		    title: {
-			text: 'Fruit Consumption'
-		    },
-		    xAxis: {
-			categories: []
-		    },
-		    yAxis: {
-			title: {
-			    text: 'Units'
-			}
-		    },
-		    series: []
-		};
-	
-		alert("1");
+$(document).ready(function() {
+
+	var options = {
+	    chart: {
+		renderTo: 'container',
+		defaultSeriesType: 'column'
+	    },
+	    title: {
+		text: 'Deduções Restituições Receita'
+	    },
+	    xAxis: {
+		categories: []
+	    },
+	    yAxis: {
+		title: {
+		    text: 'R$'
+		}
+	    },
+	    series: []
+	};
 
 	$.get('data.csv', function(data) {
-	    
-//alert(data);
-		
 	    // Split the lines
 	    var lines = data.split('\n');
-alert("2");
-	    
-alert(lines);
-
-	    
-	}
-)
-
-// Iterate over the lines and add categories or series
+	    // Iterate over the lines and add categories or series
 	    $.each(lines, function(lineNo, line) {
 		var items = line.split(',');
-		alert("dentro da funcao");	
+		
 		// header line containes categories
 		if (lineNo == 0) {
 		    $.each(items, function(itemNo, item) {
-		        if (itemNo > 0) options.xAxis.categories.push(item);
+		        if (itemNo > 1) options.xAxis.categories.push(item);
 		    });
 		}
+		else if (lineNo == 3) {
+				//series.name = item;
+			}
 		
 		// the rest of the lines contain data with their name in the first position
 		else {
@@ -65,9 +55,18 @@ alert(lines);
 		        data: []
 		    };
 		    $.each(items, function(itemNo, item) {
-		        if (itemNo == 0) {
-		            series.name = item;
-		        } else {
+       			if(itemNo == 0){
+				//series.name = item;
+			}
+			else if (itemNo == 1) {
+				series.name = item;
+			}
+			/*else if (itemNo == 4) {
+				//series.name = item;
+			}*/else if (itemNo == 5) {
+				//series.name = item;
+			}
+			 else {
 		            series.data.push(parseFloat(item));
 		        }
 		    });
@@ -82,20 +81,13 @@ alert(lines);
 	    var chart = new Highcharts.Chart(options);
 	});
 
-
-
-		alert("final");
-
-
+});
 		</script>
-
 	</head>
 	<body>
-		<script src="./js/highcharts.js"></script>
 		<script src="./js/modules/exporting.js"></script>
-
-		<!div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-		<div id="container" style="width: 100%; height: 400px"></div>
+		<!-- 3. Add the container -->
+		<div id="container" style="width: 800px; height: 400px; margin: 0 auto"></div>
 		<script type="text/javascript" src="./js/themes/gray.js"></script>
 	</body>
 </html>
