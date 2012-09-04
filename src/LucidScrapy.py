@@ -80,10 +80,10 @@ class DatamineThread(threading.Thread):
 
             fetchReceitas.fetch(', '.join(chunk.keys()), str(chunk.values()))
             
-            #load.storeData(load.getFilePointer(', '.join(chunk.keys())))
-            #load.storeData(', '.join(chunk.keys()))
+            load.storeData(load.getFilePointer(', '.join(chunk.keys())))
+            load.storeData(', '.join(chunk.keys()))
 
-            #fetchReceitas.HashSetDispose()
+            fetchReceitas.HashSetDispose()
             
             self.out_queue.task_done()
             
