@@ -9,12 +9,12 @@ to check public expenses.
 ~/LucidScrapy/docs/relatorio/Relatorio_V.pdf
 
  --- Specifications:
-Operational System - Ubuntu 11.04
-Netbeans 6.5
-Python 2.7.2
-C Programming Language
-Doxygen 1.8.2
-Git distributed version control system 1.7.12
+ * Operational System - Ubuntu 11.04
+ * Netbeans 6.5
+ * Python 2.7.2
+ * C Programming Language
+ * Doxygen 1.8.2
+ * Git distributed version control system 1.7.12
 
  --- Authors and Contributors:
 Kamilla H. Crozara (@KamillaaaH) and Maylon Felix (@MaylonFelix).
