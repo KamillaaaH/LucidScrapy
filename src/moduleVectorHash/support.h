@@ -1,6 +1,6 @@
 /*
  * File:   support.h
- * Author: kamilla
+ * Author: kamilla e maylon
  *
  * Created on August 12, 2012, 10:41 PM
  */

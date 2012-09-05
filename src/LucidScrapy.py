@@ -1,8 +1,8 @@
 # -*- coding: utf-8 *-*
-__author__="kamilla"
+__author__="kamilla e maylon"
 __date__ ="$Aug 1, 2012 10:52:37 AM$"
 
-## @author Kamilla H. Crozara
+## @authors Kamilla H. Crozara and Maylon Felix
 #  @date August, 2012
 #  @version 1.0
 #  @filename LucidScrapy.py

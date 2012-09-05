@@ -1,6 +1,6 @@
 /* 
  * File:   hashset.h
- * Author: kamilla
+ * Author: kamilla e maylon
  *
  * Created on August 12, 2012, 5:33 PM
  */

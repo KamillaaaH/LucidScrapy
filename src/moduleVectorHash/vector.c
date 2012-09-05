@@ -1,6 +1,6 @@
 /*
  * File:   vector.c
- * Author: kamilla
+ * Author: kamilla e maylon
  *
  * Created on August 12, 2012, 5:32 PM
  */

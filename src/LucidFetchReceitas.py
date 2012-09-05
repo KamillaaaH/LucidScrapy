@@ -1,11 +1,11 @@
 # -*- coding: utf-8 *-*
 
-## @author Kamilla H. Crozara
+## @author Kamilla H. Crozara and Maylon Felix
 #  @date August, 2012
 #  @version 1.0
 #  @filename LucidFetchReceitas.py
 
-__author__ = "kamilla"
+__author__ = "kamilla e maylon"
 __date__ = "$Aug 1, 2012 10:52:37 AM$"
 
 from ctypes import *
@@ -13,7 +13,6 @@ import errno
 import sys
 import time
 import ast
-from bs4 import BeautifulSoup
 import mechanize
 import os
 import re
@@ -51,6 +50,7 @@ class LucidFetchReceitas():
         except:
             print "Can't load C module to create a new HashSet."
 
+        print html
         ## @labels
         #  are the labels from file that was download
         #  it iterates over the result and gets the labels
