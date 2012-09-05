@@ -31,7 +31,6 @@ install manually:
 
 
  --- Run:
-
 Inside the paste ~/LucidScrapy/moduleVectorHash follow command bellow:
 
 $ make compile
