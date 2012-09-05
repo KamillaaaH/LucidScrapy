@@ -5,10 +5,10 @@ This is a project about transparency and open government. It'll show expenses fr
 Governo do Distrito Federal (Brazil) using detailed charts. That will be useful for citizens who want 
 to check public expenses.
  
- --- Assigment (Report):
+ - Assigment (Report):
 ~/LucidScrapy/docs/relatorio/Relatorio_V.pdf
 
- --- Specifications:
+ - Specifications:
  * Operational System - Ubuntu 11.04
  * Netbeans 6.5
  * Python 2.7.2
@@ -16,13 +16,14 @@ to check public expenses.
  * Doxygen 1.8.2
  * Git distributed version control system 1.7.12
 
- --- Authors and Contributors:
-Kamilla H. Crozara (@KamillaaaH) and Maylon Felix (@MaylonFelix).
+ - Authors and Contributors:
+ * Kamilla H. Crozara (@KamillaaaH) and Maylon Felix (@MaylonFelix).
+ * Carla Silva Rocha Aguiar (rocha.carla@gmail.com)
 
- --- Home Page:
+ - Home Page:
 http://kamillaaah.github.com/LucidScrapy/
 
- --- Setup: 
+ - Setup: 
 It's under development so it needs some already instaled modules to execute. Before execute is necessary 
 install manually:
 
@@ -30,7 +31,7 @@ install manually:
 * Ctypes - http://docs.python.org/library/ctypes.html
 
 
- --- Run:
+ - Run:
 Inside the paste ~/LucidScrapy/moduleVectorHash follow command bellow:
 
 $ make compile
