@@ -29,6 +29,7 @@ install manually:
 * Mechanize - http://wwwsearch.sourceforge.net/mechanize/
 * Ctypes - http://docs.python.org/library/ctypes.html
 
+
  --- Run:
 
 Inside the paste ~/LucidScrapy/moduleVectorHash follow command bellow:
