@@ -84,14 +84,21 @@
                         <h1> Página Inicial </h1>
                         <hr />
                         <p>
-                        	Um dos maiores objetivos da moderna Administração Pública é estímulo à transparência pública. A ampliação da divulgação das ações governamentais a maioria dos brasileiros contribui para o fortalecimento da democracia e prestigia e desenvolve as noções de cidadania.
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                         </p>
                         <p>
-				 Dada a importância que a transparência pública assumiu nos dias atuais, esse projeto tem por objetivo facilitar o acompanhamento e a visualização dos gastos do GDF por meio de um desenvolvimento de um sistema de monitoramento Web.   
-			</p>
-			<p>
-				As entradas desse programa são basicamente as receitas e as despesas do GDF, sendo esses dados atualizadas diariamente. As saídas desse programa são basicamente gráficos detalhados das receitas e das despesas do GDF. Os tipos de gráficos utilizados são conhecidos como gráficos de colunas com detalhamentos.
-			</p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </p>
                         <hr />                   
                         <button class="btn btn-primary btn-large">Clique aqui exemplo!</button>
                     </div>
