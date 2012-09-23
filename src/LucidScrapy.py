@@ -29,6 +29,10 @@ import mechanize
 import cookielib
 import threading
 import Queue
+import json
+import time
+import re
+import UnicodeDictWriter
 
 hosts = {'receitas': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Geral&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-0&_dataSource=dsReceitasPorCategoria-0&isc_metaDataPrefix=_&isc_dataFormat=json",
          'receitas_correntes': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=1&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-1&_dataSource=dsReceitasPorCategoria-1&isc_metaDataPrefix=_&isc_dataFormat=json",
@@ -38,7 +42,6 @@ hosts = {'receitas': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.
          'deducoes_restituicoes_receita': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=9&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-5&_dataSource=dsReceitasPorCategoria-5&isc_metaDataPrefix=_&isc_dataFormat=json"}
 
 queue = Queue.Queue()
-threadLock = threading.Lock()
 out_queue = Queue.Queue()
 
 ## Uses ctypes to try to load the C module.
@@ -61,7 +64,13 @@ class ThreadUrl(threading.Thread):
             ## @data
             #  is the result from the request to the urls in hosts
             data = br.open(host[1]).get_data()
-            chunk = {host[0]: data}
+
+            #create a list with the name of category and the data
+            chunk = []
+            chunk.append(host[0])
+            chunk.append(data)
+
+            #put list in out_queue
             self.out_queue.put(chunk)
             self.queue.task_done()
 
@@ -74,16 +83,12 @@ class DatamineThread(threading.Thread):
     def run(self):
         while True:
             #grabs host from queue
-            chunk = self.out_queue.get()
-          
+            #pop element from queue to send it to fetchReceitas
+            data = self.out_queue.get()
+       
             fetchReceitas = LucidFetchReceitas.LucidFetchReceitas()
-
-            fetchReceitas.fetch(', '.join(chunk.keys()), str(chunk.values()))
-            
-            load.storeData(load.getFilePointer(', '.join(chunk.keys())))
-            load.storeData(', '.join(chunk.keys()))
-
-            fetchReceitas.HashSetDispose()
+            fetchReceitas.fetch(data[0], data[1])
+           
             
             self.out_queue.task_done()
             
@@ -110,7 +115,7 @@ def getBrowser():
         br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
         return br
 
-
+start = time.time()
 def main():
 
     #spawn a pool of threads, and pass them queue instance
@@ -134,3 +139,4 @@ def main():
   
     
 main()
+print "Elapsed Time: %s " % (time.time() - start)

@@ -16,6 +16,14 @@ import ast
 import mechanize
 import os
 import re
+import json
+from unicodedata import normalize
+import UnicodeDictWriter
+import threading
+import Queue
+
+
+
 
 ## @class LucidFetchReceitas()
 #  This class is responsible for get data from Portal da Transparência
@@ -24,69 +32,91 @@ class LucidFetchReceitas():
     
     ## @position
     #  Item's position in hashtable
-    position = 0
+    #position = 0
 
 
     ## Uses ctypes to try to load the C module.
     #  @load is the cdll referency that loads dynamic link libraries.
-    try:
-        load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
-    except:
-        print "Can't load C module!"
+    #try:
+        #load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
+    #except:
+        #print "Can't load C module!"
     
     ## @fn fetch(self, BASE_URL, br) request data and categorize it
     #  @param [BASE_URL] is the link for get data
     #  @param [br] Is the browser from mechanizer
-    def fetch(self, categoria, html):
-        ## Tries to call a function from C module to create a new hashset
-        #  The hashset created gets follow parameters:
-        #   @sys.getsizeof(str) is the size of some string in Python
-        #   @totalRows is the number of rows from file that was downloaded
-        try:
-            ## @totalRows
-            #  is the number of rows from file that was downloaded
-            totalRows = int(re.search('[0-9]', re.search('"totalRows":[0-9]', html).group()).group())
-            self.load.Py_HashSetNew(sys.getsizeof(str), totalRows + 1)
-        except:
-            print "Can't load C module to create a new HashSet."
-
-        print html
-        ## @labels
-        #  are the labels from file that was download
-        #  it iterates over the result and gets the labels
+    def fetch(self, category, response):
         labels = []
-        for s in re.findall('("[A-Z]+")', html):
+        for s in re.findall('("[A-Z]+")', response):
             text = re.search('[\d\w\s]+', s).group()
             if not any(text in title for title in labels):
                 labels.append(text)
 
-        labels.append("ID")
+        labels.append("R___")
+
+        fileName = str(category) + ".csv"
+        with open(fileName, 'w') as csvfile:
+            writer = UnicodeDictWriter.UnicodeDictWriter(csvfile, labels)
+            writer.writerows(json.loads(response)['response']['data'])
+        ## Tries to call a function from C module to create a new hashset
+        #  The hashset created gets follow parameters:
+        #   @sys.getsizeof(str) is the size of some string in Python
+        #   @totalRows is the number of rows from file that was downloaded
+        #try:
+            ## @totalRows
+            #  is the number of rows from file that was downloaded
+            #totalRows = int(re.search('[0-9]', re.search('"totalRows":[0-9]', html).group()).group())
+            #self.load.Py_HashSetNew(sys.getsizeof(str), totalRows + 1)
+        #except:
+            #print "Can't load C module to create a new HashSet."
         
-        print labels
+        ## @labels
+        #  are the labels from file that was download
+        #  it iterates over the result and gets the labels
+        #labels = []
+        #for s in re.findall('("[A-Z]+")', response):
+        #    text = re.search('[\d\w\s]+', s).group()
+        #    if not any(text in title for title in labels):
+        #        labels.append(text)
+
+        #labels.append("ID")
+        
+        #print labels
         ## Convert @labels into string and try to put it into the getPosition
         #  in hashtable
-        self.putItemInHash(', '.join(labels), self.getPosition())
+        #self.putItemInHash(', '.join(labels), self.getPosition())
         #print self.getPosition()
+
+    # print response
+        #buffer = re.findall('(\'{*.+\')', response)
+        #dataObj = json.loads(json.dumps(response))
+
+        #with open('jsontest.csv', 'w') as csvfile:
+            #writer = UnicodeDictWriter.UnicodeDictWriter(csvfile, labels)
+            #writer.writerows(json.loads(response)['response']['data'])
         
+
+        #print normalize('NFKD', dataObj.decode('utf-8')).encode('ASCII', 'ignore')
         ## @rows
         #  Are the rows from file that was download
         #  it iterates over the result and gets the labels
-        rows = []
-        result = re.findall('(:\"[\d\w\s\-r"/"r"Ç"r"Õ"r"Á"r"Ê"r"É"r"Ã" ]+"|:[\d\w\s.\-r"/"r"Ç"r"Õ"r"Á"r"Ê""r"É"r"Ã" ]+)', html)
+        #rows = []
+        #result = re.findall('(:\"[\d\w\s\-r"/"r"Ç"r"Õ"r"Á"r"Ê"r"É"r"Ã" ]+"|:[\d\w\s.\-r"/"r"Ç"r"Õ"r"Á"r"Ê""r"É"r"Ã" ]+)', response, re.U)
+        #print result
        
-        i = 0
-        numItemsInRow = 0
-        for i in range(3, len(result)):
-            rows.append(re.search('[^":]+', result[i]).group())
-            numItemsInRow = numItemsInRow + 1
-            if numItemsInRow == len(labels):
-                self.putItemInHash(', '.join(rows), self.getPosition())
-                print rows
-                rows = []
-                numItemsInRow = 0
-                i = i + 1
+        #i = 0
+        #numItemsInRow = 0
+        #for i in range(3, len(result)):
+            #   rows.append(re.search('[^":]+', result[i]).group())
+            #   numItemsInRow = numItemsInRow + 1
+            #   if numItemsInRow == len(labels):
+                #self.putItemInHash(', '.join(rows), self.getPosition())
+                #print rows
+            #       rows = []
+            #      numItemsInRow = 0
+            #       i = i + 1
 
-        self.load.storeData(self.load.getFilePointer(categoria))
+        #self.load.storeData(self.load.getFilePointer(categoria))
                 
 
     ## @fn putItemIhHash(self, item, position) request data and categorize it
