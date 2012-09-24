@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Receitas</title>
+		
+	<link href="bootstrap.min.css" rel="stylesheet">
+        <!-- TWITTER BOOTSTRAP CSS -->
+        <link href="./bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+ 	<link href="./bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <!-- TWITTER BOOTSTRAP JS -->
+        <script src="./bootstrap/js/bootstrap.min.js"></script>
+
+		<!Incluindo JQuery>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="./js/highcharts.js"></script>
+	
+		<!Inicializando o Gráfico>
+		<script type="text/javascript">
+
+$(document).ready(function() {
+
+	var options = {
+	    chart: {
+		renderTo: 'container',
+		defaultSeriesType: 'column'
+	    },
+	    title: {
+		text: 'Receitas'
+	    },
+	    xAxis: {
+		categories: ['Prevista', 'Realizada', 'Diferença']
+	    },
+	    yAxis: {
+		title: {
+		    text: 'R$'
+		}
+	    },
+
+
+
+
+	    series: []
+	};
+
+	$.get('./src/receitas.csv', function(data) {
+	    // Split the lines
+	    var lines = data.split('\n');
+	    // Iterate over the lines and add categories or series
+	    $.each(lines, function(lineNo, line) {
+		var items = line.split(',');
+		
+		// header line containes categories
+		/*if (lineNo == 0) {
+		    $.each(items, function(itemNo, item) {
+		        if (itemNo > 1) options.xAxis.categories.push(item);
+		    });
+		}*/
+		if (lineNo == 5) {
+				//series.name = item;
+			}
+		
+		// the rest of the lines contain data with their name in the first position
+		else {
+		    var series = {
+		        data: []
+		    };
+		    $.each(items, function(itemNo, item) {
+       			if(itemNo == 0){
+				//series.name = item;
+			}
+			else if (itemNo == 1) {
+				series.name = item;
+			}
+			/*else if (itemNo == 4) {
+				//series.name = item;
+			}*/else if (itemNo == 5) {
+				//series.name = item;
+			}
+			 else {
+		            series.data.push(parseFloat(item));
+		        }
+		    });
+		    
+		    options.series.push(series);
+	    
+		}
+		
+	    });
+	    
+	    // Create the chart
+	    var chart = new Highcharts.Chart(options);
+	});
+
+});
+		</script>
+	</head>
+	<body>
+
+
+        <!-- HEADER -->
+        <header class="container-fluid">
+            <div class="row">
+                <div class="span12">
+                    <div class="navbar">
+                        <div class="navbar-inner">
+                            <div class="container">
+                                <h2>Lucidy Scrap</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- / HEADER -->
+
+
+
+
+
+<!-- Masthead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="row">
+    <div class="span10 offset1">
+<!--      <h1>LucidyScrapy</h1>-->
+      <p class="lead">This is a project about government open data that uses Python to get information about expenses from Governo do Distrito Federal (Brazil). </p>
+    </div>
+     </div>
+
+
+
+  <div class="subnav">
+    <ul class="nav nav-pills">
+      <li><a href="receitas.htm">Receitas</a></li>
+   <li><a href="receita_capital.htm">receita_capital</a></li>
+   <li><a href="receitas_correntes.htm">receitas_correntes</a></li>
+   <li><a href="receitas_intra_orcamentarias_capital.htm">receitas_intra_orcamentarias_capital</a></li>
+   <li><a href="receitas_intra_orcamentarias_correntes.htm">receitas_intra_orcamentarias_correntes</a></li>
+   <li><a href="deducoes_restituicoes_receita.htm">deducoes_restituicoes_receita</a></li>
+
+
+    </ul>
+  </div>
+</header>
+
+
+
+		<script src="./js/modules/exporting.js"></script>
+		<!-- 3. Add the container -->
+		<div id="container" style="width: 800px; height: 400px; margin: 0 auto"></div>
+		<script type="text/javascript" src="./js/themes/gray.js"></script>
+	</body>
+</html>
