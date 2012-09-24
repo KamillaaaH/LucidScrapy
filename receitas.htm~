@@ -98,10 +98,11 @@ $(document).ready(function() {
 	<body>
 
 
+      
         <!-- HEADER -->
         <header class="container-fluid">
-            <div class="row">
-                <div class="span12">
+            <!div class="row">
+                <!div class="span12">
                     <div class="navbar">
                         <div class="navbar-inner">
                             <div class="container">
@@ -109,10 +110,11 @@ $(document).ready(function() {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                <!/div>
+            <!/div>
         </header>
         <!-- / HEADER -->
+
 
 
 
@@ -133,11 +135,11 @@ $(document).ready(function() {
   <div class="subnav">
     <ul class="nav nav-pills">
       <li><a href="receitas.htm">Receitas</a></li>
-   <li><a href="receita_capital.htm">receita_capital</a></li>
-   <li><a href="receitas_correntes.htm">receitas_correntes</a></li>
-   <li><a href="receitas_intra_orcamentarias_capital.htm">receitas_intra_orcamentarias_capital</a></li>
-   <li><a href="receitas_intra_orcamentarias_correntes.htm">receitas_intra_orcamentarias_correntes</a></li>
-   <li><a href="deducoes_restituicoes_receita.htm">deducoes_restituicoes_receita</a></li>
+   <li><a href="receita_capital.htm">Receita Capital</a></li>
+   <li><a href="receitas_correntes.htm">Receitas Correntes</a></li>
+   <li><a href="receitas_intra_orcamentarias_capital.htm">Receitas Intra Orcamentarias Capital</a></li>
+   <li><a href="receitas_intra_orcamentarias_correntes.htm">Receitas Intra Orcamentarias Correntes</a></li>
+   <li><a href="deducoes_restituicoes_receita.htm">Deducoes Restituicoes Receita</a></li>
 
 
     </ul>
