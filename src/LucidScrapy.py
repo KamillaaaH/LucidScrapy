@@ -86,10 +86,12 @@ def getBrowser():
 def queueHostsDespesas():
     i = 76
     j = 1
-    while i < 14498:
+    while i < 300:
+    #while i < 14498:
         key = "despesas_categoria_credor_0" + str(j)
-        hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i+390) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
-        i = i+390
+        print "Get " + " " + key + " " + str(i) + " " + str(i+76)
+        hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i+76) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
+        i = i+76
         j = j+1
 
 def getLenHostsReceitas():
@@ -126,6 +128,10 @@ def main():
         dt = DatamineThread.DatamineThread(out_queue, fetchReceitas)
         dt.setDaemon(True)
         dt.start()
+
+    #wait on the queue until everything has been processed
+    queue.join()
+    out_queue.join()
     ####
     # End threads to fetch RECEITAS
     ####
@@ -133,30 +139,28 @@ def main():
     ####
     # Threads to fetch DESPESAS
     ####
-    #fetchDespesas = LucidFetchDespesas.LucidFetchDespesas()
+    fetchDespesas = LucidFetchDespesas.LucidFetchDespesas()
     #spawn a pool of threads, and pass them queue instance
-    #for i in range(lenHostDespesas):
-     #   br = getBrowser()
-     #   t = ThreadUrl.ThreadUrl(queue_despesas, out_queue_despesas, br)
-     #   t.setDaemon(True)
-     #   t.start()
+    for i in range(lenHostDespesas):
+        br = getBrowser()
+        t = ThreadUrl.ThreadUrl(queue_despesas, out_queue_despesas, br)
+        t.setDaemon(True)
+        t.start()
 
     #populate queue with data
-    #for host in hostsDespesas.items():
-     #   queue_despesas.put(host)
+    for host in hostsDespesas.items():
+        queue_despesas.put(host)
 
-    #for i in range(lenHostDespesas):
-        #print "send to DataMine "
-     #   dt = DatamineThread.DatamineThread(out_queue_despesas, fetchDespesas)
-     #   dt.setDaemon(True)
-     #   dt.start()
+    for i in range(lenHostDespesas):
+        print "send to DataMine "
+        dt = DatamineThread.DatamineThread(out_queue_despesas, fetchDespesas)
+        dt.setDaemon(True)
+        dt.start()
+
 
     #wait on the queue until everything has been processed
-    queue.join()
-    out_queue.join()
-    #wait on the queue until everything has been processed
-    #queue_despesas.join()
-    #out_queue_despesas.join()
+    queue_despesas.join()
+    out_queue_despesas.join()
 
     ####
     # End threads to fetch DESPESAS

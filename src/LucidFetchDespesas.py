@@ -23,7 +23,7 @@ class LucidFetchDespesas():
                 labels.append(text)
 
         labels.append("R___")
-        print response
+        print labels
         #codUG = re.findall('([0-9]+)', str(re.findall('("CODIGOUG":"[0-9_.]+")', response, re.U)) , re.U)
         #fileName = str(category) + ".csv"
         #c = csv.writer(open("fileDespesas.csv", "wb"))
