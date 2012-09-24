@@ -7,18 +7,22 @@
         <!-- JQUERY -->
  <!--      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/jquery-1.7.1.min.js"><\/script>')</script>
- 
+ -->
+
+	<link href="bootstrap.min.css" rel="stylesheet">
         <!-- TWITTER BOOTSTRAP CSS -->
         <link href="./bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
- 
+ 	<link href="./bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
         <!-- TWITTER BOOTSTRAP JS -->
         <script src="./bootstrap/js/bootstrap.min.js"></script>
  
     </head>
     <body>
+
+
         <!-- HEADER -->
         <header class="container-fluid">
-            <div class="row-fluid">
+            <div class="row">
                 <div class="span12">
                     <div class="navbar">
                         <div class="navbar-inner">
@@ -31,14 +35,68 @@
             </div>
         </header>
         <!-- / HEADER -->
+
+
+
+
+
+<!-- Masthead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="row">
+    <div class="span9">
+<!--      <h1>LucidyScrapy</h1>-->
+      <p class="lead">This is a project about government open data that uses Python to get information about expenses from Governo do Distrito Federal (Brazil). </p>
+    </div>
+    <div class="span3">
+      <div class="bsa well">
+          <div id="bsap_1277971" class="bsarocks bsap_c466df00a3cd5ee8568b5c4983b6bb19"></div>
+          <div class="clearfix"><a href="http://www.transparencia.df.gov.br" id="bsap_aplink">Portal da Transparência do GDF</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="subnav">
+    <ul class="nav nav-pills">
+      <li><a href="#welcome">Bem Vindo</a></li>
+      <li><a href="#grafhs">Gráficos</a></li>
+      <li><a href="./docs/html/index.html">Documentação</a></li>
+      <li><a href="#tools">Ferramentas</a></li>
+      <li><a href="#download">Download</a></li>
+      <li><a href="#authors">Autores e Contribuintes</a></li>
+    </ul>
+  </div>
+</header>
+
+
+<!-- Welcome
+================================================== -->
+<section id="welcome">
+  <div class="page-header">
+    <div class="span10">
+      <h3>Bem Vindo</h3>
+
+        <p>Um dos maiores objetivos da moderna Administração Pública é estímulo à transparência pública. A ampliação da divulgação das ações governamentais a maioria dos brasileiros contribui para o fortalecimento da democracia e prestigia e desenvolve as noções de cidadania.</p>
+        <p>As Páginas de Transparência Pública dão continuidade às ações de governo voltadas para o incremento da transparência e do controle social, com objetivo de divulgar as despesas realizadas pelos órgãos e entidades da Administração Pública Federal, informando sobre execução orçamentária, licitações, contratações, convênios, diárias e passagens.</p>
+	<p>Dessa forma, conforme dispõe a Portaria Interministerial nº 140, de 16 de março de 2006, cada órgão e entidade deve ter sua própria Página de Transparência com informações detalhadas. Seguindo o que dispõe essa portaria o  governo do Governo do Distrito Federal (GDF) apresenta os seus gasto no Portal da Transparência do Distrito Federal. </p>
+	<p>Dada a importância que a transparência pública assumiu nos dias atuais, esse projeto tem por objetivo facilitar o acompanhamento e a visualização dos gastos do GDF por meio de um desenvolvimento de um sistema de monitoramento Web.</p>
+  </div>
+</section>
+
+
+<!-- Graphs
+================================================== -->
+<section id="grafhs">
+  <div class="page-header">
+    <div class="span10">
+      <h3>Gráficos</h3>
+      <address>
+
+
  
-        <!-- CLASSE QUE DEFINE O CONTAINER COMO FLUIDO (100%) -->
-        <div class="container-fluid">
-            <!-- CLASSE PARA DEFINIR UMA LINHA -->
-            <div class="row-fluid">
-                <!-- COLUNA OCUPANDO 2 ESPAÇOS NO GRID -->
-                <div class="span2">
-                    <h2> Gráficos </h2>
+                <div class="span6">
+                    <div class="well">
+                        
+
                     <ul class="nav nav-tabs nav-stacked">
                         <li">
                             <a href="index.htm">
@@ -73,30 +131,89 @@
                         <li>
                             <a href="#">
                                 <i class="icon-star"></i>
-                                Receitas
+           	                     Receitas
                             </a>
                         </li>
                     </ul>
-                </div>
-                <!-- COLUNA OCUPANDO 10 ESPAÇOS NO GRID -->
-                <div class="span10">
-                    <div class="well">
-                        <h1> Página Inicial </h1>
-                        <hr />
-                        <p>
-                        	Um dos maiores objetivos da moderna Administração Pública é estímulo à transparência pública. A ampliação da divulgação das ações governamentais a maioria dos brasileiros contribui para o fortalecimento da democracia e prestigia e desenvolve as noções de cidadania.
-                        </p>
-                        <p>
-				 Dada a importância que a transparência pública assumiu nos dias atuais, esse projeto tem por objetivo facilitar o acompanhamento e a visualização dos gastos do GDF por meio de um desenvolvimento de um sistema de monitoramento Web.   
-			</p>
-			<p>
-				As entradas desse programa são basicamente as receitas e as despesas do GDF, sendo esses dados atualizadas diariamente. As saídas desse programa são basicamente gráficos detalhados das receitas e das despesas do GDF. Os tipos de gráficos utilizados são conhecidos como gráficos de colunas com detalhamentos.
-			</p>
-                        <hr />                   
-                        <button class="btn btn-primary btn-large">Clique aqui exemplo!</button>
-                    </div>
+                           </div>
                 </div>
             </div>
         </div>
+
+  </div>
+
+</section>
+
+
+ 
+
+<!-- Tools
+================================================== -->
+<section id="tools">
+  <div class="page-header">
+    <div class="span10">
+      <h3>Ferramentas</h3>
+
+               
+            <div class="span6">
+                    <div class="well">
+                        
+
+                    <ul class="nav nav-tabs nav-stacked">
+                        <li">
+                            <a href="http://www.ubuntu.com/">
+                                <i class="icon-star"></i>
+                                Operational System - Ubuntu 11.04
+                            </a>
+                        </li>
+    
+
+
+                        <li>
+                            <a href="http://dlc.sun.com.edgesuite.net/netbeans/6.5/python/ea/">
+                                <i class="icon-star"></i>
+                                Netbeans 6.5
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.python.org/">
+                                <i class="icon-star"></i>
+                                Python 2.7.2
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.cprogramming.com/">
+                                <i class="icon-star"></i>
+                                C Programming Language
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.stack.nl/~dimitri/doxygen/">
+                                <i class="icon-star"></i>
+                                 Doxygen 1.8.2
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/">
+                                <i class="icon-star"></i>
+           	                     Git distributed version control system 1.7.12
+                            </a>
+                        </li>
+                    </ul>
+                           </div>
+                </div>
+            </div>
+        </div>
+
+  </div>
+
+</section>
+
+
+    
+
+
+
+
     </body>
 </html>
