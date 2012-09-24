@@ -11,19 +11,10 @@ __date__ = "$Aug 1, 2012 10:52:37 AM$"
 from ctypes import *
 import errno
 import sys
-import time
-import ast
-import mechanize
+import json
 import os
 import re
-import json
-from unicodedata import normalize
 import UnicodeDictWriter
-import threading
-import Queue
-
-
-
 
 ## @class LucidFetchReceitas()
 #  This class is responsible for get data from Portal da Transparência

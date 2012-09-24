@@ -24,25 +24,34 @@ __date__ ="$Aug 1, 2012 10:52:37 AM$"
 
 import LucidFetchReceitas
 import LucidFetchDespesas
+import ThreadUrl
+import DatamineThread
 from ctypes import *
 import mechanize
 import cookielib
 import threading
 import Queue
-import json
 import time
 import re
-import UnicodeDictWriter
 
-hosts = {'receitas': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Geral&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-0&_dataSource=dsReceitasPorCategoria-0&isc_metaDataPrefix=_&isc_dataFormat=json",
+
+hostsReceitas = {'receitas': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Geral&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-0&_dataSource=dsReceitasPorCategoria-0&isc_metaDataPrefix=_&isc_dataFormat=json",
          'receitas_correntes': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=1&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-1&_dataSource=dsReceitasPorCategoria-1&isc_metaDataPrefix=_&isc_dataFormat=json",
          'receitas_capital': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=2&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-2&_dataSource=dsReceitasPorCategoria-2&isc_metaDataPrefix=_&isc_dataFormat=json",
          'receitas_intra_orcamentarias_correntes': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=7&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-3&_dataSource=dsReceitasPorCategoria-3&isc_metaDataPrefix=_&isc_dataFormat=json",
          'receitas_intra_orcamentarias_capital': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=8&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-4&_dataSource=dsReceitasPorCategoria-4&isc_metaDataPrefix=_&isc_dataFormat=json",
          'deducoes_restituicoes_receita': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=9&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-5&_dataSource=dsReceitasPorCategoria-5&isc_metaDataPrefix=_&isc_dataFormat=json"}
 
+
+hostsDespesas = {'despesas_categoria_credor_0': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCredor&_dataSource=dsDespesasOrgaoCredor&isc_metaDataPrefix=_&isc_dataFormat=json"}
+
+    
+
 queue = Queue.Queue()
 out_queue = Queue.Queue()
+
+queue_despesas = Queue.Queue()
+out_queue_despesas = Queue.Queue()
 
 ## Uses ctypes to try to load the C module.
 #  @load is the cdll referency that loads dynamic link libraries.
@@ -51,47 +60,6 @@ try:
 except:
     print "Can't load C module!"
 
-class ThreadUrl(threading.Thread):
-    def __init__(self, queue, out_queue):
-        threading.Thread.__init__(self)
-        self.queue = queue
-        self.out_queue = out_queue
-        
-    def run(self):
-        while True:
-            host = self.queue.get()
-            br = getBrowser()
-            ## @data
-            #  is the result from the request to the urls in hosts
-            data = br.open(host[1]).get_data()
-
-            #create a list with the name of category and the data
-            chunk = []
-            chunk.append(host[0])
-            chunk.append(data)
-
-            #put list in out_queue
-            self.out_queue.put(chunk)
-            self.queue.task_done()
-
-
-class DatamineThread(threading.Thread):
-    def __init__(self, out_queue):
-        threading.Thread.__init__(self)
-        self.out_queue = out_queue
-
-    def run(self):
-        while True:
-            #grabs host from queue
-            #pop element from queue to send it to fetchReceitas
-            data = self.out_queue.get()
-       
-            fetchReceitas = LucidFetchReceitas.LucidFetchReceitas()
-            fetchReceitas.fetch(data[0], data[1])
-           
-            
-            self.out_queue.task_done()
-            
 
 def getBrowser():
         # Browser
@@ -115,27 +83,92 @@ def getBrowser():
         br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
         return br
 
+def queueHostsDespesas():
+    i = 76
+    j = 1
+    while i < 14498:
+        key = "despesas_categoria_credor_0" + str(j)
+        hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i+390) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
+        i = i+390
+        j = j+1
+
+def getLenHostsReceitas():
+    return len(hostsReceitas)
+
+def getLenHostDespesas():
+    return len(hostsDespesas)
+
+    
 start = time.time()
 def main():
-
+    queueHostsDespesas()
+    lenHostReceitas = getLenHostsReceitas()
+    lenHostDespesas = getLenHostDespesas()
+    print lenHostReceitas
+    print lenHostDespesas 
+ 
+    ####
+    # Threads to fetch RECEITAS
+    ####
+    fetchReceitas = LucidFetchReceitas.LucidFetchReceitas()
     #spawn a pool of threads, and pass them queue instance
-    for i in range(5):
-        t = ThreadUrl(queue, out_queue)
+    for i in range(lenHostReceitas):
+        br = getBrowser()
+        t = ThreadUrl.ThreadUrl(queue, out_queue, br)
         t.setDaemon(True)
         t.start()
 
     #populate queue with data
-    for host in hosts.items():
+    for host in hostsReceitas.items():
         queue.put(host)
 
-    for i in range(5):
-        dt = DatamineThread(out_queue)
+    for i in range(lenHostReceitas):
+        dt = DatamineThread.DatamineThread(out_queue, fetchReceitas)
         dt.setDaemon(True)
         dt.start()
+    ####
+    # End threads to fetch RECEITAS
+    ####
+
+    ####
+    # Threads to fetch DESPESAS
+    ####
+    #fetchDespesas = LucidFetchDespesas.LucidFetchDespesas()
+    #spawn a pool of threads, and pass them queue instance
+    #for i in range(lenHostDespesas):
+     #   br = getBrowser()
+     #   t = ThreadUrl.ThreadUrl(queue_despesas, out_queue_despesas, br)
+     #   t.setDaemon(True)
+     #   t.start()
+
+    #populate queue with data
+    #for host in hostsDespesas.items():
+     #   queue_despesas.put(host)
+
+    #for i in range(lenHostDespesas):
+        #print "send to DataMine "
+     #   dt = DatamineThread.DatamineThread(out_queue_despesas, fetchDespesas)
+     #   dt.setDaemon(True)
+     #   dt.start()
 
     #wait on the queue until everything has been processed
     queue.join()
     out_queue.join()
+    #wait on the queue until everything has been processed
+    #queue_despesas.join()
+    #out_queue_despesas.join()
+
+    ####
+    # End threads to fetch DESPESAS
+    ####
+
+
+    #fetchDespesas = LucidFetchDespesas.LucidFetchDespesas()
+    #br = getBrowser()
+    #print str(despesas_url.values())
+    #despesas = br.open(str(despesas_url.values())).get_data()
+    #fetchDespesas.fetch(despesas)
+    
   
     
 main()
