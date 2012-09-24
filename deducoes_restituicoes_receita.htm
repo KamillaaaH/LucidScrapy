@@ -43,7 +43,7 @@ $(document).ready(function() {
 	    series: []
 	};
 
-	$.get('./src/deducoes_restituicoes_receita.csv', function(data) {
+	$.get('./src/dataReceitas/deducoes_restituicoes_receita.csv', function(data) {
 	    // Split the lines
 	    var lines = data.split('\n');
 	    // Iterate over the lines and add categories or series
@@ -140,6 +140,8 @@ $(document).ready(function() {
    <li><a href="receitas_intra_orcamentarias_capital.htm">Receitas Intra Orcamentarias Capital</a></li>
    <li><a href="receitas_intra_orcamentarias_correntes.htm">Receitas Intra Orcamentarias Correntes</a></li>
    <li><a href="deducoes_restituicoes_receita.htm">Deducoes Restituicoes Receita</a></li>
+
+
 
 
     </ul>

@@ -43,7 +43,7 @@ $(document).ready(function() {
 	    series: []
 	};
 
-	$.get('./src/receitas_intra_orcamentarias_capital.csv', function(data) {
+	$.get('./src/dataReceitas/receitas_intra_orcamentarias_capital.csv', function(data) {
 	    // Split the lines
 	    var lines = data.split('\n');
 	    // Iterate over the lines and add categories or series
