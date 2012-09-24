@@ -21,7 +21,6 @@ __date__ ="$Aug 1, 2012 10:52:37 AM$"
 #
 # etc...
 #/
-
 import LucidFetchReceitas
 import LucidFetchDespesas
 import ThreadUrl
@@ -43,7 +42,7 @@ hostsReceitas = {'receitas': "http://www.transparencia.df.gov.br/_layouts/Br.Gov
          'deducoes_restituicoes_receita': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=9&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-5&_dataSource=dsReceitasPorCategoria-5&isc_metaDataPrefix=_&isc_dataFormat=json"}
 
 
-hostsDespesas = {'despesas_categoria_credor_0': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCredor&_dataSource=dsDespesasOrgaoCredor&isc_metaDataPrefix=_&isc_dataFormat=json"}
+hostsDespesas = {'despesas_categoria_credor_0': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=0&_endRow=300&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCredor&_dataSource=dsDespesasOrgaoCredor&isc_metaDataPrefix=_&isc_dataFormat=json"}
 
     
 
@@ -55,10 +54,10 @@ out_queue_despesas = Queue.Queue()
 
 ## Uses ctypes to try to load the C module.
 #  @load is the cdll referency that loads dynamic link libraries.
-try:
-    load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
-except:
-    print "Can't load C module!"
+#try:
+    #load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
+#except:
+    #print "Can't load C module!"
 
 
 def getBrowser():
@@ -83,16 +82,36 @@ def getBrowser():
         br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
         return br
 
+def getNumberRows():
+    br = getBrowser()
+    response = br.open("http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCredor&_dataSource=dsDespesasOrgaoCredor&isc_metaDataPrefix=_&isc_dataFormat=json").get_data()
+    return int(re.search('[0-9]+', re.search('"totalRows":[0-9]+', response).group()).group())
+
 def queueHostsDespesas():
-    i = 76
+    numRows = getNumberRows()
+    i = 301
     j = 1
-    while i < 300:
-    #while i < 14498:
+    #while i < 300:
+    while i <= numRows:
+        if i+301 > numRows:
+            remainderRows = numRows - i
+            key = "despesas_categoria_credor_0" + str(j)
+            hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i+remainderRows) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
+            return
+        
         key = "despesas_categoria_credor_0" + str(j)
-        print "Get " + " " + key + " " + str(i) + " " + str(i+76)
-        hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i+76) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
-        i = i+76
+        hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i+301) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
+        i = i+301
         j = j+1
+
+def calculateAverageDespesas():
+    ## Uses ctypes to try to load the C module.
+    #  @load is the cdll referency that loads dynamic link libraries.
+    try:
+        load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
+    except:
+        print "Can't load C module!"
+        
 
 def getLenHostsReceitas():
     return len(hostsReceitas)
@@ -106,8 +125,6 @@ def main():
     queueHostsDespesas()
     lenHostReceitas = getLenHostsReceitas()
     lenHostDespesas = getLenHostDespesas()
-    print lenHostReceitas
-    print lenHostDespesas 
  
     ####
     # Threads to fetch RECEITAS
@@ -152,7 +169,6 @@ def main():
         queue_despesas.put(host)
 
     for i in range(lenHostDespesas):
-        print "send to DataMine "
         dt = DatamineThread.DatamineThread(out_queue_despesas, fetchDespesas)
         dt.setDaemon(True)
         dt.start()
@@ -164,16 +180,10 @@ def main():
 
     ####
     # End threads to fetch DESPESAS
-    ####
-
-
-    #fetchDespesas = LucidFetchDespesas.LucidFetchDespesas()
-    #br = getBrowser()
-    #print str(despesas_url.values())
-    #despesas = br.open(str(despesas_url.values())).get_data()
-    #fetchDespesas.fetch(despesas)
-    
-  
+    ####  
     
 main()
+
 print "Elapsed Time: %s " % (time.time() - start)
+
+

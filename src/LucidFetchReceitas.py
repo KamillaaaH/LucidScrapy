@@ -15,17 +15,16 @@ import json
 import os
 import re
 import UnicodeDictWriter
+import csv
 
 ## @class LucidFetchReceitas()
 #  This class is responsible for get data from Portal da Transparência
 #  do Distrito Federal and save this in CSV format
 class LucidFetchReceitas():
-    
     ## @position
     #  Item's position in hashtable
     #position = 0
-
-
+    
     ## Uses ctypes to try to load the C module.
     #  @load is the cdll referency that loads dynamic link libraries.
     #try:
@@ -45,10 +44,19 @@ class LucidFetchReceitas():
 
         labels.append("R___")
 
-        fileName = str(category) + ".csv"
+        print labels
+        
+        pathName = "dataReceitas"
+        self.verifyFolder(pathName)
+        fileName = pathName + "/" + str(category) + ".csv"
+
         with open(fileName, 'w') as csvfile:
+            labelWriter = csv.writer(csvfile, delimiter=',',
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            labelWriter.writerow(labels)
             writer = UnicodeDictWriter.UnicodeDictWriter(csvfile, labels)
             writer.writerows(json.loads(response)['response']['data'])
+
         ## Tries to call a function from C module to create a new hashset
         #  The hashset created gets follow parameters:
         #   @sys.getsizeof(str) is the size of some string in Python
@@ -78,23 +86,6 @@ class LucidFetchReceitas():
         #self.putItemInHash(', '.join(labels), self.getPosition())
         #print self.getPosition()
 
-    # print response
-        #buffer = re.findall('(\'{*.+\')', response)
-        #dataObj = json.loads(json.dumps(response))
-
-        #with open('jsontest.csv', 'w') as csvfile:
-            #writer = UnicodeDictWriter.UnicodeDictWriter(csvfile, labels)
-            #writer.writerows(json.loads(response)['response']['data'])
-        
-
-        #print normalize('NFKD', dataObj.decode('utf-8')).encode('ASCII', 'ignore')
-        ## @rows
-        #  Are the rows from file that was download
-        #  it iterates over the result and gets the labels
-        #rows = []
-        #result = re.findall('(:\"[\d\w\s\-r"/"r"Ç"r"Õ"r"Á"r"Ê"r"É"r"Ã" ]+"|:[\d\w\s.\-r"/"r"Ç"r"Õ"r"Á"r"Ê""r"É"r"Ã" ]+)', response, re.U)
-        #print result
-       
         #i = 0
         #numItemsInRow = 0
         #for i in range(3, len(result)):
@@ -108,7 +99,15 @@ class LucidFetchReceitas():
             #       i = i + 1
 
         #self.load.storeData(self.load.getFilePointer(categoria))
-                
+
+
+    def verifyFolder(self, pathName):
+        try:
+            if not os.path.exists(pathName):
+                os.makedirs(pathName)
+        except IOError as e:
+            print "I/O error({0}): {1}".format(e.errno, e.strerror)
+            return "Maybe you don't have permission to access this folder"
 
     ## @fn putItemIhHash(self, item, position) request data and categorize it
     #  @param [item] is the item to put in hashtable
@@ -139,10 +138,4 @@ class LucidFetchReceitas():
         categoriaChar = c_char_p(categoria)
         self.load.storeData(categoriaChar)
 
-    def verifyFolder(self, pathName):
-        try:
-            if not os.path.exists(pathName):
-                os.makedirs(pathName)
-        except IOError as e:
-            print "I/O error({0}): {1}".format(e.errno, e.strerror)
-            return "Maybe you don't have permission to access this folder"
+    

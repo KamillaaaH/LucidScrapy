@@ -12,9 +12,8 @@ import UnicodeDictWriter
 import json
 import csv
 
-
 class LucidFetchDespesas():
-
+        
     def fetch(self, category, response):
         labels = []
         for s in re.findall('("[A-Z]+")', response, re.U):
@@ -30,8 +29,23 @@ class LucidFetchDespesas():
         #c.writerow(labels)
         #c.writerow([" "])
         #   c.close()
-        
-        fileName = str(category) + ".csv"
+        pathName = "dataDespesas"
+        self.verifyFolder(pathName)
+        fileName = pathName + "/" + str(category) + ".csv"
+
+        #verifyFolder(self, dataDespesas)
+        #fileName = str(category) + ".csv"
         with open(fileName, 'w') as csvfile:
+            labelWriter = csv.writer(csvfile, delimiter=',',
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            labelWriter.writerow(labels)
             writer = UnicodeDictWriter.UnicodeDictWriter(csvfile, labels)
-            writer.writerows(json.loads(response)['response']['data'])            
+            writer.writerows(json.loads(response)['response']['data'])
+
+    def verifyFolder(self, pathName):
+        try:
+            if not os.path.exists(pathName):
+                os.makedirs(pathName)
+        except IOError as e:
+            print "I/O error({0}): {1}".format(e.errno, e.strerror)
+            return "Maybe you don't have permission to access this folder"
