@@ -29,7 +29,7 @@ $(document).ready(function() {
 		text: 'Receitas Capital'
 	    },
 	    xAxis: {
-		categories: ['Prevista', 'Realizada', 'Diferença']
+		categories: []
 	    },
 	    yAxis: {
 		title: {
@@ -43,7 +43,7 @@ $(document).ready(function() {
 	    series: []
 	};
 
-	$.get('./src/receitas_capital.csv', function(data) {
+	$.get('./src/dataReceitas/receitas_capital.csv', function(data) {
 	    // Split the lines
 	    var lines = data.split('\n');
 	    // Iterate over the lines and add categories or series
@@ -51,11 +51,11 @@ $(document).ready(function() {
 		var items = line.split(',');
 		
 		// header line containes categories
-		/*if (lineNo == 0) {
+		if (lineNo == 0) {
 		    $.each(items, function(itemNo, item) {
 		        if (itemNo > 1) options.xAxis.categories.push(item);
 		    });
-		}*/
+		}
 		if (lineNo == 4) {
 				//series.name = item;
 			}

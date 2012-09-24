@@ -29,7 +29,7 @@ $(document).ready(function() {
 		text: 'Receitas'
 	    },
 	    xAxis: {
-		categories: ['Prevista', 'Realizada', 'Diferença']
+		categories: []
 	    },
 	    yAxis: {
 		title: {
@@ -43,7 +43,7 @@ $(document).ready(function() {
 	    series: []
 	};
 
-	$.get('./src/receitas.csv', function(data) {
+	$.get('./src/dataReceitas/receitas.csv', function(data) {
 	    // Split the lines
 	    var lines = data.split('\n');
 	    // Iterate over the lines and add categories or series
@@ -51,12 +51,12 @@ $(document).ready(function() {
 		var items = line.split(',');
 		
 		// header line containes categories
-		/*if (lineNo == 0) {
+		if (lineNo == 0) {
 		    $.each(items, function(itemNo, item) {
 		        if (itemNo > 1) options.xAxis.categories.push(item);
 		    });
-		}*/
-		if (lineNo == 5) {
+		}
+		else if (lineNo == 6) {
 				//series.name = item;
 			}
 		
@@ -85,6 +85,7 @@ $(document).ready(function() {
 		    options.series.push(series);
 	    
 		}
+	
 		
 	    });
 	    
@@ -134,6 +135,7 @@ $(document).ready(function() {
 
   <div class="subnav">
     <ul class="nav nav-pills">
+<li><a href="site.html">Home</a></li>
       <li><a href="receitas.htm">Receitas</a></li>
    <li><a href="receita_capital.htm">Receita Capital</a></li>
    <li><a href="receitas_correntes.htm">Receitas Correntes</a></li>

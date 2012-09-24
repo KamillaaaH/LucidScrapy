@@ -111,6 +111,8 @@ FILE *getFilePointer(char *categoria){
 
 
 
+
+
 /*void *regexp(char *string, char *patrn) {
     regex_t rgT;
     regmatch_t match;
