@@ -9,7 +9,7 @@
 	%HyperLinks no arquivo Pdf
 	\usepackage[dvips, bookmarks, colorlinks=false, pdftitle={Exemplo Pdf Latex}, pdfauthor={Carla Rocha}, pdfsubject={From LaTeX to PDF}, pdfkeywords={PDF, LaTeX, hyperlinks, hyperref}]{hyperref}
 
- \title{Lucidy Scrap}
+ \title{Lista de Exercícios V}
  \author{Maylon Felix de Brito - 09/0011171\thanks{e-mail:maylon.felix@gmail.com}\\ Kamilla Holanda - 09/0038363\thanks{e-mail:holanda.kamilla@gmail.com}}
  
  \begin{document}

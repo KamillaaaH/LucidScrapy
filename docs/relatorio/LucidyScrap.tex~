@@ -44,6 +44,7 @@ Uma vez que está sendo desenvolvido em linguagem Python um sistema concorrente p
  		\item Receitas intra orçamentarias correntes: São receitas correntes de órgãos, autarquias, fundações, empresas dependentes e de outras entidades integrantes dos orçamentos fiscal e da seguridade social, quando o fato que originar a receita decorrer de despesa de órgão, autarquia, fundação, empresa dependente ou de outra entidade constante desses orçamentos, no âmbito da mesma esfera de governo.
  		\item Receitas intra Orçamentarias capital:Receitas de capital de órgãos, fundos, autarquias, fundações, empresas estatais dependentes e outras entidades integrantes dos orçamentos fiscal e da seguridade social derivadas da obtenção de recursos mediante a constituição dedívidas, amortização de empréstimos e financiamentos ou alienação decomponentes do ativo permanente, quando o fato que originar a receita decorrer dedespesa de órgão, fundo, autarquia, fundação, empresa estatal dependente ou outraentidade constante desses orçamentos, no âmbito da mesma esfera de governo.
  		\item Deduções Restituições receitas: São as deduções de restituições de receitas.
+ 		\item Outros dados de entrada: completar.
  	\end{itemize}
 
  As saídas desse programa são basicamente gráficos detalhados das receitas e das despesas do GDF. Os tipos de gráficos utilizados são conhecidos como gráficos de colunas com detalhamentos.
@@ -58,21 +59,36 @@ Uma vez que está sendo desenvolvido em linguagem Python um sistema concorrente p
 
  O programa possui três grandes módulos, um módulo em Python, um módulo em C e um módulo em html/JavaScript. Cada módulo possui um comportamento próprio e funções bem definidas. A Figura \ref{Fig1} apresenta uma visão da arquitetura do programa. 
 	
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=15cm]{arquitetura.jpg}
-   \caption{Arquitetura do Programa.}
-  \label{Fig1}
-\end{figure}
+%\begin{figure}[ht]
+ % \centering
+  %\includegraphics[width=15cm]{arquitetura.jpg}
+  % \caption{Arquitetura do Programa.}
+  %\label{Fig1}
+%\end{figure}
 
  Cada um das funções de cada módulo são detalhadas abaixo:
 
 \begin{itemize}
-\item 1 - Gerencia de threads: O módulo python cria e gerencia as threads que são utilizadas para realizar a extração de dados. Nesse ponto são implementados os conceitos de programação concorrente vistos em sala de aula, uma vez que a utilização de threads paralelisa a extração de dados tornando o processo de webscrapping mais rápido. Os dados de receitas extraídos vem em formato de Strings.
-\item 2 - Carrega o módulo C: O programa está centrado em python. Desse modo ele apenas chama quando necessário as funções implementadas em C. Para chamar dentro do python funções do C esta sendo utilizado Ctypes \footnote{Ctypes:\url{http://docs.python.org/library/ctypes.html}.}. Ctypes é uma biblioteca funcional externa para Python que prove compatibilidade entre os tipos de dados C/Python e permite a chamada de funções implementadas em C.
-\item 3 - Definição da estrutura de hash: No módulo C estão implementadas as estruturas de hashset da lista 4.
-\item 4 - Salva os dados em arquivo no formato CSV: No módulo C estão implementadas as funções que salvam dados armazenados na tabelad e hash em arquivos no formato CSV.
-\item 5 - Apresentação dos dados graficamente: O módulo desenvolvido em HTML/JavaScript le os arquivos no formato CSV e cria os gráficos utilizando a biblioteca HighCharts \footnote{Homepage HighCharts:\url{http://www.highcharts.com/}.}.
+\item Gerenciamento de threads e manipulação de Strings: 
+
+O programa está centrado em python. O módulo python cria e gerencia as threads que são utilizadas para realizar a extração de dados. Nesse ponto são implementados os conceitos de programação concorrente vistos em sala de aula, uma vez que a utilização de threads paralelisa a extração de dados tornando o processo de webscrapping mais rápido. 
+
+Além de gerenciamento dos threads o módulo Python é responsável pela manipulação das variáveis extraídas em formato Strings, pois possui uma enorme quantidade de recursos para manipular Strings e Expressões Regulares. 
+
+O módulo permite o armazenamento das variáveis em arquivos no formato CSV. Esse é o formato de arquivos interpretado pelos demais módulos.
+\item Integração entre Python e C: 
+
+O Python gerencia a integração entre os dois módulos. Ele chama e utiliza as funções implementadas em C utilizando um recurso chamado Ctypes \footnote{Ctypes:\url{http://docs.python.org/library/ctypes.html}.}. Ctypes é uma biblioteca funcional externa para Python que prove compatibilidade entre os tipos de dados C/Python e permite a chamada de funções implementadas em C.
+\item Definição da estrutura de hash e manipulações matemáticas: 
+
+No módulo C estão implementadas as estruturas de hashset da lista 4.
+
+São realizadas manipulações matemáticas nesse módulo.
+\item Camada de apresentação: 
+
+Esse módulo do sistema é responsável pela apresentação ao usuário final das variáveis manipuladas. Ele foi desenvolvido utilizando o Twitter Bootstrap \footnote{Homepage Twitter Bootstrap:\url{http://twitter.github.com/bootstrap/}.}  que é uma  coleção de ferramentas grátis para criação de websites e aplicações web. Ele permite uma melhor utilização dos recursos disponíveis em  HTML e CSS, pois possui diversos templates e outros componentes de interface. 
+
+O portal reune uma serie de informações referentes a documentação do sistema, ferramentas utilizadas e permite o download de todo o código do projeto, entretanto sua principal função é apresentar graficamente os dados obtidos. Os gráficos são gerados utilizando uma biblioteca JavaScript chamada HighCharts \footnote{Homepage HighCharts:\url{http://www.highcharts.com/}.} . Os dados de entrada para criação dos gráficos são arquivos no formato CSV.
 \end{itemize}
 
 \subsection{Execucao}
