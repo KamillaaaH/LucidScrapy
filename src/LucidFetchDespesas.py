@@ -20,9 +20,9 @@ class LucidFetchDespesas():
             text = re.search('[\d\w\s]+', s).group()
             if not any(text in title for title in labels):
                 labels.append(text)
-
+        #print response
         labels.append("R___")
-        print labels
+        #print labels
         #codUG = re.findall('([0-9]+)', str(re.findall('("CODIGOUG":"[0-9_.]+")', response, re.U)) , re.U)
         #fileName = str(category) + ".csv"
         #c = csv.writer(open("fileDespesas.csv", "wb"))
@@ -40,7 +40,16 @@ class LucidFetchDespesas():
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
             labelWriter.writerow(labels)
             writer = UnicodeDictWriter.UnicodeDictWriter(csvfile, labels)
-            writer.writerows(json.loads(response)['response']['data'])
+            towrite = json.loads(response)['response']['data']
+            #codUG = re.search('[0-9]+',str(re.search('(\"CODIGOUG\":\"[0-9]+\")', response).group())).group()
+            #print re.split('(\"CODIGOUG\":\"[0-9]+\")', response)
+            #print "New codUG: " + str(codUG)
+            writer.writerows(towrite)
+
+
+    def verifyCodUG(self, toWrite):
+        codUG = re.findall('[0-9]+',str(re.findall('(u\'CODIGOUG\': u\'[0-9]+\')', str(towrite))))
+        
 
     def verifyFolder(self, pathName):
         try:

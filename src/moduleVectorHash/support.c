@@ -14,10 +14,12 @@
 #include <string.h>
 #include <time.h>
 #include <regex.h>
+#include "dirent.h"
+
 
 /** Support functions */
 
-hashset counts;
+hashset namesOfFiles;
 vector vec;
 
 struct frequency {
@@ -68,26 +70,26 @@ static void PrintString(void *elemAddr, void *auxData) {
     fprintf(stdout, "\n%s", (char*) elemAddr);
 }
 
-void Py_HashSetNew(int elemSize, int numBuckets) {
-    //printf("\nCreate new hashset");
-    HashSetNew(&counts, elemSize, numBuckets, CompareLetter, NULL);
+void Py_HashSetNewNameOfFiles(int elemSize, int numBuckets) {
+    printf("\nCreate new hashset");
+    HashSetNew(&namesOfFiles, elemSize, numBuckets, CompareLetter, NULL);
 }
 
-void Py_HashSetEnter(const void *itemAddr, int position) {
+void Py_HashSetEnterNameOfFiles(const void *itemAddr, int position) {
     //printf("\nModule C position = %d\n", position);
-    HashSetEnter(&counts, itemAddr, position);
+    HashSetEnter(&namesOfFiles, itemAddr, position);
 }
 
 void Py_PrintFn() {
     fprintf(stdout, "\nHere is the content of the table:\n");
-    HashSetMap(&counts, PrintString, stdout); // print contents of table
+    HashSetMap(&namesOfFiles, PrintString, stdout); // print contents of table
 }
 
 void Py_HashSetDispose() {
-    HashSetDispose(&counts);
+    HashSetDispose(&namesOfFiles);
 }
 
-FILE *getFilePointer(char *categoria){
+/*FILE *getFilePointer(char *categoria) {
     time_t rawtime;
     struct tm *timeinfo;
     char buffer [80];
@@ -105,13 +107,53 @@ FILE *getFilePointer(char *categoria){
         exit(0);
     }
     return fp;
+}*/
+
+int putListFilesInHash() {
+    DIR *dir;
+    struct dirent *ent;
+    dir = opendir("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas");
+    int i = 0;
+    if (dir != NULL) {
+        /* print all the files and directories within directory */
+        while ((ent = readdir(dir)) != NULL) {
+            printf("%s\n", ent->d_name);
+            HashSetEnter(&namesOfFiles, ent->d_name, i);
+            i++;
+        }
+        closedir(dir);
+    } else {
+        /* could not open directory */
+        perror("");
+        return EXIT_FAILURE;
+    }
+
+    return 0;
 }
 
+/*void splitFiles(){
+    char *patrn = "[0-9]+";
+    char *string;
 
+    int CUR_MAX = 300;
+    char *buffer = (char*) malloc(sizeof(char) * CUR_MAX); // allocate buffer.
+    int count = 0;
+    int length = 0;
 
+    while ( (ch != '\n') && (ch != EOF) ) {
+        if(count ==CUR_MAX) { // time to expand ?
+          CUR_MAX *= 2; // expand to double the current size of anything similar.
+          count = 0;
+          buffer = realloc(buffer, CUR_MAX); // re allocate memory.
+        }
+        string = getc(file); // read from stream.
+        buffer[length] = ch; // stuff in buffer.
+        length++;
+        count++;
+    }
 
-
-
+    free(buffer);
+}*/
 
 /*void *regexp(char *string, char *patrn) {
     regex_t rgT;
@@ -123,8 +165,8 @@ FILE *getFilePointer(char *categoria){
     }
     
     while (regexec(&rgT, p, 1, &match, 0) == 0) {
-        //printf("\nSearching regex...");
-        //printf("\n%.*s", (int)(match.rm_eo - match.rm_so), &p[match.rm_so]);
+        printf("\nSearching regex...");
+        printf("\n%.*s", (int)(match.rm_eo - match.rm_so), &p[match.rm_so]);
         p += match.rm_eo; // or p = &p[match.rm_eo];
     }
 }*/
@@ -149,7 +191,7 @@ void storeData(FILE *fp) {
         exit(0);
     }*/
     int i = 0;
-    vector *vec = &counts.v;
+    vector *vec = &namesOfFiles.v;
     for (i = 0; i < vec->logLength; i++) {
         char *data = (char *) vec->elems + (i * vec->elemSize);
         fprintf(fp, "\n%s", data);

@@ -42,10 +42,7 @@ class LucidFetchReceitas():
             if not any(text in title for title in labels):
                 labels.append(text)
 
-        labels.append("R___")
-
-        print labels
-        
+        labels.append("R___")  
         pathName = "dataReceitas"
         self.verifyFolder(pathName)
         fileName = pathName + "/" + str(category) + ".csv"
