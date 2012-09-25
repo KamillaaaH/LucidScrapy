@@ -44,7 +44,6 @@ Uma vez que está sendo desenvolvido em linguagem Python um sistema concorrente p
  		\item Receitas intra orçamentarias correntes: São receitas correntes de órgãos, autarquias, fundações, empresas dependentes e de outras entidades integrantes dos orçamentos fiscal e da seguridade social, quando o fato que originar a receita decorrer de despesa de órgão, autarquia, fundação, empresa dependente ou de outra entidade constante desses orçamentos, no âmbito da mesma esfera de governo.
  		\item Receitas intra Orçamentarias capital:Receitas de capital de órgãos, fundos, autarquias, fundações, empresas estatais dependentes e outras entidades integrantes dos orçamentos fiscal e da seguridade social derivadas da obtenção de recursos mediante a constituição dedívidas, amortização de empréstimos e financiamentos ou alienação decomponentes do ativo permanente, quando o fato que originar a receita decorrer dedespesa de órgão, fundo, autarquia, fundação, empresa estatal dependente ou outraentidade constante desses orçamentos, no âmbito da mesma esfera de governo.
  		\item Deduções Restituições receitas: São as deduções de restituições de receitas.
- 		\item Outros dados de entrada: completar.
  	\end{itemize}
 
  As saídas desse programa são basicamente gráficos detalhados das receitas e das despesas do GDF. Os tipos de gráficos utilizados são conhecidos como gráficos de colunas com detalhamentos.
@@ -57,26 +56,51 @@ Uma vez que está sendo desenvolvido em linguagem Python um sistema concorrente p
 \subsection{Arquitetura}
 \label{SebSec:Arquitetura}
 
- O programa possui três grandes módulos, um módulo em Python, um módulo em C e um módulo em html/JavaScript. Cada módulo possui um comportamento próprio e funções bem definidas. A Figura \ref{Fig1} apresenta uma visão da arquitetura do programa. 
+ O programa possui três grandes módulos, um módulo em Python, um módulo em C e um módulo que utiliza HTML, CSS e JavaScript. Cada módulo possui um comportamento próprio e funções bem definidas. A Figura \ref{Fig1} apresenta uma visão da arquitetura do programa. 
 	
-%\begin{figure}[ht]
- % \centering
-  %\includegraphics[width=15cm]{arquitetura.jpg}
-  % \caption{Arquitetura do Programa.}
-  %\label{Fig1}
-%\end{figure}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=15cm]{arquitetura.jpg}
+   \caption{Arquitetura do Programa.}
+  \label{Fig1}
+\end{figure}
 
  Cada um das funções de cada módulo são detalhadas abaixo:
 
 \begin{itemize}
-\item Gerenciamento de threads e manipulação de Strings: O programa está centrado em python. O módulo python cria e gerencia as threads que são utilizadas para realizar a extração de dados. Nesse ponto são implementados os conceitos de programação concorrente vistos em sala de aula, uma vez que a utilização de threads paralelisa a extração de dados tornando o processo de webscrapping mais rápido. Além de gerenciamento dos threads o módudloO formato original dos dados extraídos é Strings, desse modo a quantidade de recursos que a linguagem Python possui para manipular Strings e Expressões Regulares facilitou bastante o trabalho.
-\item Integração entre Python e C: O Python gerencia a integração entre os dois módulos. Ele chama e utiliza as funções implementadas em C utilizando um recurso chamado Ctypes \footnote{Ctypes:\url{http://docs.python.org/library/ctypes.html}.}. Ctypes é uma biblioteca funcional externa para Python que prove compatibilidade entre os tipos de dados C/Python e permite a chamada de funções implementadas em C.
-\item 3 - Definição da estrutura de hash: No módulo C estão implementadas as estruturas de hashset da lista 4.
-\item 4 - Salva os dados em arquivo no formato CSV: No módulo C estão implementadas as funções que salvam dados armazenados na tabelad e hash em arquivos no formato CSV.
-\item Camada de apresentação: Esse módulo do sistema é responsável pela apresentação ao usuário final das variáveis manipuladas. Ele foi desenvolvido utilizando o Twitter Bootstrap \footnote{Homepage Twitter Bootstrap:\url{http://twitter.github.com/bootstrap/}.}  que é uma  coleção de ferramentas grátis para criação de websites e aplicações web. Ele permite uma melhor utilização dos recursos disponíveis em  HTML e CSS, pois possui diversos templates e outros componentes de interface. O portal reune uma serie de informações referentes a documentação do sistema, ferramentas utilizadas e permite o download de todo o código do projeto, entretanto sua principal função é apresentar graficamente os dados obtidos. Os gráficos são gerados utilizando uma biblioteca JavaScript chamada HighCharts \footnote{Homepage HighCharts:\url{http://www.highcharts.com/}.} . Os dados de entrada para criação dos gráficos são arquivos no formato CSV.
+\item Gerenciamento de threads e manipulação de Strings: 
+
+O programa está centrado em python. O módulo python cria e gerencia as threads que são utilizadas para realizar a extração de dados. Nesse ponto são implementados os conceitos de programação concorrente vistos em sala de aula, uma vez que a utilização de threads paralelisa a extração de dados tornando o processo de webscrapping mais rápido. 
+
+Além de gerenciamento dos threads o módulo Python é responsável pela manipulação das variáveis extraídas em formato Strings, pois possui uma enorme quantidade de recursos para manipular Strings e Expressões Regulares. 
+
+O módulo permite o armazenamento das variáveis em arquivos no formato CSV. Esse é o formato de arquivos interpretado pelos demais módulos.
+\item Integração entre Python e C: 
+
+O Python gerencia a integração entre os dois módulos. Ele chama e utiliza as funções implementadas em C utilizando um recurso chamado Ctypes \footnote{Ctypes:\url{http://docs.python.org/library/ctypes.html}.}. Ctypes é uma biblioteca funcional externa para Python que prove compatibilidade entre os tipos de dados C/Python e permite a chamada de funções implementadas em C.
+\item Definição da estrutura de hash e manipulações matemáticas: 
+
+No módulo C estão implementadas as estruturas de hashset.
+
+São realizadas manipulações matemáticas nesse módulo.
+\item Camada de apresentação: 
+
+Esse módulo do sistema é responsável pela apresentação ao usuário final das variáveis manipuladas. Ele foi desenvolvido utilizando o Twitter Bootstrap \footnote{Homepage Twitter Bootstrap:\url{http://twitter.github.com/bootstrap/}.}  que é uma  coleção de ferramentas grátis para criação de websites e aplicações web. Ele permite uma melhor utilização dos recursos disponíveis em  HTML e CSS, pois possui diversos templates e outros componentes de interface. 
+
+O portal \ref{Fig2} reune uma serie de informações referentes a documentação do sistema, ferramentas utilizadas e permite o download de todo o código do projeto, entretanto sua principal função é apresentar graficamente os dados obtidos. Os gráficos são gerados utilizando uma biblioteca JavaScript chamada HighCharts \footnote{Homepage HighCharts:\url{http://www.highcharts.com/}.} . Os dados de entrada para criação dos gráficos são arquivos no formato CSV.
 \end{itemize}
 
-\subsection{Execucao}
+	
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=15cm]{tela_inicial.png}
+ \caption{Página inicial do Sistema.}
+ \label{Fig2}
+\end{figure}
+
+
+
+\subsection{Execução}
 \label{SebSec:Execucao}
 
  Os passos juntamente com as bibliotecas necessárias para execução do programa são apresentados nessa seção. O software deve ser executado em sistema operacional linux e no browser google chromium. A IDE de desenvolvimento é o Netbeans 6.5, a versão do Python é a 2.7.2, para a documentação esta sendo usado o Doxygen 1.8.2 e para controle de versão e compartilhamento de código o Git distributed version control system 1.7.12.
@@ -98,7 +122,18 @@ Uma vez que está sendo desenvolvido em linguagem Python um sistema concorrente p
 \item re; 
 \end{itemize}
 
- Todo o código produzido pode ser baixado no seguinte site: \url{http://kamillaaah.github.com/LucidScrapy/}. Esse é o site do projeto produzido automaticamente pelo github.
+\subsection{Resultados}
+\label{SebSec:Resultados}
+ 
+ Os resultados da execução do sistema são apresentados graficamente. Nos gráficos de receitas são apresentadas as receitas previstas, realizadas e a diferença entre o previsto e o realizado conforme \ref{Fig3}, assim como é possível exportar os gráficos em diversos formatos de imagens, por exemplo, png, jpeg, etc.
+
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=15cm]{receitas.png}
+ \caption{Gráfico de receitas.}
+ \label{Fig3}
+\end{figure}
 
 \subsection{Problemas Técnicos}
 \label{SebSec:ProblemasTecnicos}
@@ -106,18 +141,27 @@ Uma vez que está sendo desenvolvido em linguagem Python um sistema concorrente p
  Os principais problemas enfrentados nessas lista foram na hora de manipulação dos threads e da criação dos gráficos com HighCharts. A seguir cada problema é detalhado:
 
 \begin{itemize}
-\item São criadas 6 threads que devem salvar 6 arquivos no formato CSV, porém apenas três arquivos são salvos apóso a execução do programa. Esse problema de gerenciamento das threads ainda não foi resolvido nessa lista.
+\item Um dos problemas enfretnados foi durante a criação das threads que devem salvar os arquivos no formato CSV. Nem todas executavam e quando executavam não trazia a resposta esperada.
+\item Embora a manipulação de Strings em python seja simples, nem toda as operações com strings foram realizadas nessa linguagem. Um simples tentativa de tentar concatenar duas strings em C gerol o seguinte erro \ref{Fig4}.
 \item A criação de gráficos com HighCharts a partir dos arquivos no formato CSV foi bem complicada. Mesmo toda com toda a lógica correta os gráficos simplesmente não eram gerados. Após muita pesquisa descobriu-se que o JavaScript não estava conseguindo ler os arquivos no formato CSV no disco local. Esse é um dos padrões de segurança implementados pelos browsers. Para resolver esse problema descobriu-se a existencia de flags que podem ser utilizados no chromium. Essa flags dão ao browser funcionalidades especiais, pois habilitam ou desabilitam certos recursos padrões. Uma dessas flags é "--allow-file-access-from-files" que permite que os arquivos indicados a seguir consigam ler arquivos em diretórios locais. Desse modo essa flag resolveu o problema da geração dos graficos. 
 \end{itemize}
+
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=15cm]{erro.png}
+ \caption{Erro na manipulação de Strings.}
+ \label{Fig4}
+\end{figure}
 
  
 \section{Conclusão}
 \label{Sec:Conclusao}
  
- Essa lista resultou no desenvolvimento de grande parte do trabalho. Grande avanços foram alcançados nela como a integração entre os módulos C, Python e JavaScript. As principais dificuldades concentraram-se no gerenciamento de threads e na criação dos gráficos. Grande parte deles foi resolvido sobrando apenas alguns para serem concertados em entregas futuras.
+ Esse trabalho foi de encontro a grande demanda dos dias atuais por transparência pública, pois facilita o acesso as informações de como o governo vem investindo o dinheiro dos seus contruintes. O sistema de Monitoramento desenvolvido extrai os dados específicos dos gastos do GDF a uma dada frequência, manipula os dados e os apresentados em gráficos detalhados que facilitaram sua interpretação pelos cidadãos.
 
- Na próxima lista pretende-se realizar alguma manipulação estatística com esses dados utilizando pra isso Scheme e aprimorar o módulo de apresentação dos dados.
-
+ As principais dificuldades enfrentadas na realização do projeto concentraram-se no gerenciamento de threads, integração do python com C, expressões regulares e na criação dos gráficos. Embora grande parte desses problemas tenha demandado muito tempo para ser corrigido, eles possibilitou grande aprendizado em C, Python, HTML, CSS e JavaScript. Assim como permitiu a prática dos paradigmas de Concorrente, Imperativo e Orientada a Objetos.
+ 
 %\bibliographystyle{acmsiggraph}
 \bibliography{bibliografia}
 

@@ -49,6 +49,10 @@
       <p class="lead">This is a project about government open data that uses Python to get information about expenses from Governo do Distrito Federal (Brazil). </p>
     </div>
      </div>
+
+
+
+
   <div class="subnav">
     <ul class="nav nav-pills">
       <li><a href="#welcome">Bem Vindo</a></li>
@@ -57,8 +61,22 @@
       <li><a href="ferramentas.html">Ferramentas</a></li>
       <li><a href="https://github.com/KamillaaaH/LucidScrapy">Download</a></li>
     </ul>
+
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+    <li><a tabindex="-1" href="#">Action</a></li>
+    <li><a tabindex="-1" href="#">Another action</a></li>
+    <li><a tabindex="-1" href="#">Something else here</a></li>
+    <li class="divider"></li>
+    <li><a tabindex="-1" href="#">Separated link</a></li>
+    </ul>
+
   </div>
 <!/header>
+
+
+
+    
+
 
 
 <!-- Welcome
@@ -243,7 +261,7 @@
         <p>Carla Silva Rocha Aguiar (rocha.carla@gmail.com)
 </p>
 
-s
+
                             </div>
                         </div>
                     </div>

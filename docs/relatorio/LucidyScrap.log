@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.8.31)  25 SEP 2012 01:09
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.8.31)  25 SEP 2012 03:07
 entering extended mode
  %&-line parsing enabled.
 **LucidyScrap.tex
@@ -262,44 +262,76 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 41.
  [2]
-
-LaTeX Warning: Reference `Fig1' on page 3 undefined on input line 60.
-
-[3] [4]
-Overfull \hbox (18.33298pt too wide) in paragraph at lines 116--117
-[]\OT1/cmr/m/n/10 Todo o c^^Sodigo pro-duzido pode ser baix-ado no seguinte sit
-e: []$\OT1/cmtt/m/n/10 http : / / kamillaaah .
+<arquitetura.jpg, id=57, 940.26282pt x 560.8453pt>
+File: arquitetura.jpg Graphic file (type jpg)
+ <use arquitetura.jpg>
+Overfull \hbox (81.79134pt too wide) in paragraph at lines 63--64
+ [][] 
  []
 
-[5] (./LucidyScrap.bbl) [6] (./LucidyScrap.aux)
+[3] <tela_inicial.png, id=71, 1371.1225pt x 770.88pt>
+File: tela_inicial.png Graphic file (type png)
+ <use tela_inicial.png>
+Overfull \hbox (81.79134pt too wide) in paragraph at lines 96--97
+ [][] 
+ []
 
-LaTeX Warning: There were undefined references.
+[4 <./arquitetura.jpg>] [5 <./tela_inicial.png (PNG copy)>]
+Overfull \hbox (0.13934pt too wide) in paragraph at lines 128--129
+\OT1/cmr/m/n/10 gr^^Saficos de re-ceitas s~ao ap-re-sen-tadas as re-ceitas pre-
+vis-tas, re-al-izadas e a diferen^^Xca
+ []
 
- ) 
+<receitas.png, id=87, 602.25pt x 301.125pt>
+File: receitas.png Graphic file (type png)
+ <use receitas.png>
+Overfull \hbox (81.79134pt too wide) in paragraph at lines 133--134
+ [][] 
+ []
+
+[6 <./receitas.png>] <erro.png, id=96, 1284.8pt x 803.0pt>
+File: erro.png Graphic file (type png)
+ <use erro.png>
+Overfull \hbox (81.79134pt too wide) in paragraph at lines 152--153
+ [][] 
+ []
+
+
+Overfull \hbox (1.47285pt too wide) in paragraph at lines 161--162
+\OT1/cmr/m/n/10 Esse tra-balho foi de en-con-tro a grande de-manda dos dias at-
+u-ais por transpar^encia
+ []
+
+
+Overfull \hbox (0.66724pt too wide) in paragraph at lines 163--164
+[]\OT1/cmr/m/n/10 As prin-ci-pais di-fi-cul-dades en-frentadas na re-al-iza^^Xc
+~ao do pro-jeto concentraram-
+ []
+
+(./LucidyScrap.bbl) [7] [8 <./erro.png (PNG copy)>] (./LucidyScrap.aux) ) 
 Here is how much of TeX's memory you used:
- 4530 strings out of 495061
- 64906 string characters out of 1182621
- 133976 words of memory out of 3000000
- 7625 multiletter control sequences out of 15000+50000
- 12446 words of font info for 49 fonts, out of 3000000 for 9000
+ 4562 strings out of 495061
+ 65331 string characters out of 1182621
+ 134202 words of memory out of 3000000
+ 7646 multiletter control sequences out of 15000+50000
+ 11970 words of font info for 47 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 38i,11n,36p,815b,365s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/sha
-re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-te
-xlive/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texmf-texlive/fonts/
-type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts/type1/public
-/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
-/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr6.pfb></
-usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/tex
-mf-texlive/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/fo
-nts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texmf-texlive/fonts/type1/pub
-lic/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfont
-s/cm/cmsy6.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy8.p
-fb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/sh
-are/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on LucidyScrap.pdf (6 pages, 190093 bytes).
+ 38i,11n,36p,815b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/
+share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf
+-texlive/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texmf-texlive/fon
+ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts/type1/pub
+lic/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts
+/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr6.pfb
+></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/
+texmf-texlive/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive
+/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texmf-texlive/fonts/type1/
+public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsf
+onts/cm/cmsy6.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy
+8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
+Output written on LucidyScrap.pdf (8 pages, 551684 bytes).
 PDF statistics:
- 136 PDF objects out of 1000 (max. 8388607)
- 18 named destinations out of 1000 (max. 500000)
- 49 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 156 PDF objects out of 1000 (max. 8388607)
+ 25 named destinations out of 1000 (max. 500000)
+ 77 words of extra memory for PDF output out of 10000 (max. 10000000)
 
