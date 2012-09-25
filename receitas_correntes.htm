@@ -44,19 +44,19 @@ $(document).ready(function() {
 	};
 
 	$.get('./src/dataReceitas/receitas_correntes.csv', function(data) {
-	    // Split the lines
+	     // Split the lines
 	    var lines = data.split('\n');
 	    // Iterate over the lines and add categories or series
 	    $.each(lines, function(lineNo, line) {
 		var items = line.split(',');
 		
 		// header line containes categories
-		/*if (lineNo == 0) {
+		if (lineNo == 0) {
 		    $.each(items, function(itemNo, item) {
 		        if (itemNo > 1) options.xAxis.categories.push(item);
 		    });
-		}*/
-		if (lineNo == 8) {
+		}
+		else if (lineNo == 9) {
 				//series.name = item;
 			}
 		
@@ -85,6 +85,7 @@ $(document).ready(function() {
 		    options.series.push(series);
 	    
 		}
+	
 		
 	    });
 	    
