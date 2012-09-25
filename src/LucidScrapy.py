@@ -22,12 +22,18 @@ __date__ = "$Aug 1, 2012 10:52:37 AM$"
 # etc...
 #/
 from ctypes import *
+import sys
 import time
+import glob
+import os
+import DatamineThread
+import LucidFetchDespesas
+import LucidFetchReceitas
 import Queue
+import ThreadUrl
 import cookielib
 import mechanize
 import re
-import sys
 
 hostsReceitas = {'receitas': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Geral&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-0&_dataSource=dsReceitasPorCategoria-0&isc_metaDataPrefix=_&isc_dataFormat=json",
     'receitas_correntes': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Categoria&codigo=1&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-1&_dataSource=dsReceitasPorCategoria-1&isc_metaDataPrefix=_&isc_dataFormat=json",
@@ -78,18 +84,18 @@ def queueHostsDespesas():
     j = 1
     #while i < 300:
     while i <= numRows:
-        if i + 301 > numRows:
+        if i + 501 > numRows:
             remainderRows = numRows - i
             key = "despesas_categoria_credor_0" + str(j)
             hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i + remainderRows) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
             return
         
         key = "despesas_categoria_credor_0" + str(j)
-        hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i + 301) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
-        i = i + 301
+        hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i + 501) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
+        i = i + 501
         j = j + 1
 
-def calculateAverageDespesas(load):
+def putFilesInHash(load):
     ## Tries to call a function from C module to create a new hashset
     #  The hashset created gets follow parameters:
     #   @sys.getsizeof(str) is the size of some string in Python
@@ -97,11 +103,34 @@ def calculateAverageDespesas(load):
         #load.hello()
         #print sys.getsizeof(str)
         #print getLenHostDespesas()
-        load.Py_HashSetNewNameOfFiles(sys.getsizeof(str), getLenHostDespesas()+10)
+        load.Py_HashSetNewNameOfFiles(sys.getsizeof(str), getLenHostDespesas() + 3)
         load.putListFilesInHash()
     except:
-        print "Can't load C module to create a new HashSet."
+        print "\nCan't load C module to create a new HashSet."
+
+
+def calculateAverageDespesas():
+    ## Tries to call a function from C module to create a new hashset
+    #  The hashset created gets follow parameters:
+    #   @sys.getsizeof(str) is the size of some string in Python
+    path = '/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas'
+    for infile in glob.glob(os.path.join(path, '*.csv')):
+        f = open(infile, "r")
+        line = f.readline()
         
+        while line:
+            obj2 = re.search('[0-9]+', line)
+            if obj2:
+                buffer = obj2.group()
+                obj1 = re.search('[0-9]+', line)
+                if obj1:
+                    list = open(buffer + ".csv")
+                    while buffer == obj1:
+                        list.writerow(line)
+            line = f.readline()
+
+        f.close()
+        list.close()
 
 def getLenHostsReceitas():
     return len(hostsReceitas)
@@ -119,10 +148,70 @@ def main():
     except:
         print "Can't load C module!"
     queueHostsDespesas()
-    calculateAverageDespesas(load)
+    lenHostReceitas = getLenHostsReceitas()
+    lenHostDespesas = getLenHostDespesas()
+
+
+    ####
+    # Threads to fetch RECEITAS
+    ####
+    fetchReceitas = LucidFetchReceitas.LucidFetchReceitas()
+    #spawn a pool of threads, and pass them queue instance
+    for i in range(lenHostReceitas):
+        br = getBrowser()
+        t = ThreadUrl.ThreadUrl(queue, out_queue, br)
+        t.setDaemon(True)
+        t.start()
+
+    #populate queue with data
+    for host in hostsReceitas.items():
+        queue.put(host)
+
+    for i in range(lenHostReceitas):
+        dt = DatamineThread.DatamineThread(out_queue, fetchReceitas)
+        dt.setDaemon(True)
+        dt.start()
+
+    #wait on the queue until everything has been processed
+    queue.join()
+    out_queue.join()
+    ####
+    # End threads to fetch RECEITAS
+    ####
+
+    ####
+    # Threads to fetch DESPESAS
+    ####
+    fetchDespesas = LucidFetchDespesas.LucidFetchDespesas()
+    #spawn a pool of threads, and pass them queue instance
+    for i in range(lenHostDespesas):
+        br = getBrowser()
+        t = ThreadUrl.ThreadUrl(queue_despesas, out_queue_despesas, br)
+        t.setDaemon(True)
+        t.start()
+
+    #populate queue with data
+    for host in hostsDespesas.items():
+        queue_despesas.put(host)
+
+    for i in range(lenHostDespesas):
+        dt = DatamineThread.DatamineThread(out_queue_despesas, fetchDespesas)
+        dt.setDaemon(True)
+        dt.start()
+
+
+    #wait on the queue until everything has been processed
+    queue_despesas.join()
+    out_queue_despesas.join()
+    #calculateAverageDespesas()
+
+    ####
+    # End threads to fetch DESPESAS
+    ####
+
+    #putFilesInHash(load)
+
     
 main()
 
 print "Elapsed Time: %s " % (time.time() - start)
-
-
