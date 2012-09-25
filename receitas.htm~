@@ -154,5 +154,33 @@ $(document).ready(function() {
 		<!-- 3. Add the container -->
 		<div id="container" style="width: 800px; height: 400px; margin: 0 auto"></div>
 		<script type="text/javascript" src="./js/themes/gray.js"></script>
+
+
+
+
+<!-- HEADER -->
+        <header class="container-fluid">
+            <!div class="row">
+                <!div class="span8">
+                    <div class="navbar">
+                        <div class="navbar-inner">
+                            <div class="container">
+                                  <h4>Autores e Contribuintes</h4>
+
+        <p>Kamilla H. Crozara <a href="http://www.twitter.com/KamillaaaH">@KamillaaaH</a> and Maylon Felix <a href="http://www.twitter.com/MaylonFelix">@MaylonFelix</a>.</p>
+        <p>Carla Silva Rocha Aguiar (rocha.carla@gmail.com)
+</p>
+
+
+                            </div>
+                        </div>
+                    </div>
+                <!/div>
+            <!/div>
+        </header>
+        <!-- / HEADER -->
+
+
+
 	</body>
 </html>

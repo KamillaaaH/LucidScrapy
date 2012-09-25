@@ -43,20 +43,20 @@ $(document).ready(function() {
 	    series: []
 	};
 
-	$.get('./src/deducoes_restituicoes_receita.csv', function(data) {
-	    // Split the lines
+	$.get('./src/dataReceitas/deducoes_restituicoes_receita.csv', function(data) {
+ // Split the lines
 	    var lines = data.split('\n');
 	    // Iterate over the lines and add categories or series
 	    $.each(lines, function(lineNo, line) {
 		var items = line.split(',');
 		
 		// header line containes categories
-		/*if (lineNo == 0) {
+		if (lineNo == 0) {
 		    $.each(items, function(itemNo, item) {
 		        if (itemNo > 1) options.xAxis.categories.push(item);
 		    });
-		}*/
-		if (lineNo == 2) {
+		}
+		else if (lineNo == 2) {
 				//series.name = item;
 			}
 		
@@ -85,6 +85,7 @@ $(document).ready(function() {
 		    options.series.push(series);
 	    
 		}
+	
 		
 	    });
 	    
@@ -92,16 +93,15 @@ $(document).ready(function() {
 	    var chart = new Highcharts.Chart(options);
 	});
 
-});
-		</script>
+});		</script>
 	</head>
 	<body>
 
 
-        <!-- HEADER -->
+       <!-- HEADER -->
         <header class="container-fluid">
-            <div class="row">
-                <div class="span12">
+            <!div class="row">
+                <!div class="span12">
                     <div class="navbar">
                         <div class="navbar-inner">
                             <div class="container">
@@ -109,10 +109,11 @@ $(document).ready(function() {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                <!/div>
+            <!/div>
         </header>
         <!-- / HEADER -->
+
 
 
 
@@ -139,6 +140,8 @@ $(document).ready(function() {
    <li><a href="receitas_intra_orcamentarias_capital.htm">Receitas Intra Orcamentarias Capital</a></li>
    <li><a href="receitas_intra_orcamentarias_correntes.htm">Receitas Intra Orcamentarias Correntes</a></li>
    <li><a href="deducoes_restituicoes_receita.htm">Deducoes Restituicoes Receita</a></li>
+
+
 
 
     </ul>
