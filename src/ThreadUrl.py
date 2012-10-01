@@ -21,7 +21,7 @@ class ThreadUrl(threading.Thread):
 
             if None == data:
                 return
-            
+
             #create a list with the name of category and the data
             chunk = []
             chunk.append(host[0])

@@ -11,7 +11,6 @@ class DatamineThread(threading.Thread):
         self.instance = instance
 
     def run(self):
-        #print "In DATAMINE"
         while True:
             #grabs host from queue
             #pop element from queue to send it to fetchReceitas

@@ -2,54 +2,52 @@
 __author__ = "kamilla and maylon"
 __date__ = "$Aug 1, 2012 10:52:37 AM$"
 
-import time
-import mechanize
-import cookielib
 import errno
+import json
+import Queue
+import UnicodeDictWriter
+import cookielib
+import csv
+from datetime import date
+import mechanize
 import os
 import re
-import UnicodeDictWriter
-import json
-import csv
 
 class LucidFetchDespesas():
-        
+
     def fetch(self, category, response):
-        labels = []
-        for s in re.findall('("[A-Z]+")', response, re.U):
-            text = re.search('[\d\w\s]+', s).group()
-            if not any(text in title for title in labels):
-                labels.append(text)
-        #print response
-        labels.append("R___")
-        #print labels
-        #codUG = re.findall('([0-9]+)', str(re.findall('("CODIGOUG":"[0-9_.]+")', response, re.U)) , re.U)
-        #fileName = str(category) + ".csv"
-        #c = csv.writer(open("fileDespesas.csv", "wb"))
-        #c.writerow(labels)
-        #c.writerow([" "])
-        #   c.close()
+        queueDespesas = Queue.Queue()
+        jsonResponse = json.loads(response)['response']['data']
         pathName = "dataDespesas"
         self.verifyFolder(pathName)
-        fileName = pathName + "/" + str(category) + ".csv"
-
-        #verifyFolder(self, dataDespesas)
-        #fileName = str(category) + ".csv"
-        with open(fileName, 'w') as csvfile:
-            labelWriter = csv.writer(csvfile, delimiter=',',
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            labelWriter.writerow(labels)
-            writer = UnicodeDictWriter.UnicodeDictWriter(csvfile, labels)
-            towrite = json.loads(response)['response']['data']
-            #codUG = re.search('[0-9]+',str(re.search('(\"CODIGOUG\":\"[0-9]+\")', response).group())).group()
-            #print re.split('(\"CODIGOUG\":\"[0-9]+\")', response)
-            #print "New codUG: " + str(codUG)
-            writer.writerows(towrite)
+        buffCodUG = jsonResponse[0].get('CODIGOUG')
+        empenho = pagar = 0
+        labels = ['CODIGOUG', 'NOMEUG', 'TOTALEMPENHO', 'TOTALPAGAR']
 
 
-    def verifyCodUG(self, toWrite):
-        codUG = re.findall('[0-9]+',str(re.findall('(u\'CODIGOUG\': u\'[0-9]+\')', str(towrite))))
-        
+        for i in range(0, len(jsonResponse)):
+            if jsonResponse[i]:
+                queueDespesas.put(jsonResponse[i])
+
+        c = csv.writer(open(self.getFileName(pathName, category), "wb"))
+        c.writerow(labels)
+        while(not queueDespesas.empty()):
+            queueElem = queueDespesas.get()
+            empenho = empenho + int(queueElem.get('EMPENHO'))
+            pagar = pagar + int(queueElem.get('PAGAR'))
+
+            if queueElem.get('CODIGOUG') != buffCodUG:
+                #row = str(queueElem.get('CODIGOUG')) + ","  + str(queueElem.get('NOMEUG').encode('ascii', 'ignore'))  + ","  + str(empenho)  + ","  +  str(pagar)
+                row = [queueElem.get('CODIGOUG'), queueElem.get('NOMEUG').encode('utf-8'), empenho, pagar]
+                #row = {'CODIGOUG' : queueElem.get('CODIGOUG'), 'NOMEUG' : queueElem.get('NOMEUG').encode('ascii', 'ignore'), 'EMPENHO' : empenho, 'PAGAR': pagar}
+                if row:
+                    c.writerow(row)
+
+                empenho = pagar = 0
+                buffCodUG = queueElem.get('CODIGOUG')
+
+    def getFileName(self, pathName, fileName):
+        return pathName + "/" + str(fileName) + ".csv"
 
     def verifyFolder(self, pathName):
         try:

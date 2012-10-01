@@ -22,7 +22,6 @@ __date__ = "$Aug 1, 2012 10:52:37 AM$"
 # etc...
 #/
 from ctypes import *
-import sys
 import time
 import glob
 import os
@@ -86,38 +85,22 @@ def queueHostsDespesas():
     while i <= numRows:
         if i + 501 > numRows:
             remainderRows = numRows - i
-            key = "despesas_categoria_credor_0" + str(j)
+            key = "despesas_categoria_credor_" + str(j) + "_"
             hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i + remainderRows) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
             return
-        
-        key = "despesas_categoria_credor_0" + str(j)
+
+        key = "despesas_categoria_credor_" + str(j) + "_"
         hostsDespesas.update({key: "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=" + str(i) + "&_endRow=" + str(i + 501) + "&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCred"})
         i = i + 501
         j = j + 1
 
-def putFilesInHash(load):
-    ## Tries to call a function from C module to create a new hashset
-    #  The hashset created gets follow parameters:
-    #   @sys.getsizeof(str) is the size of some string in Python
-    try:
-        #load.hello()
-        #print sys.getsizeof(str)
-        #print getLenHostDespesas()
-        load.Py_HashSetNewNameOfFiles(sys.getsizeof(str), getLenHostDespesas() + 3)
-        load.putListFilesInHash()
-    except:
-        print "\nCan't load C module to create a new HashSet."
-
 
 def calculateAverageDespesas():
-    ## Tries to call a function from C module to create a new hashset
-    #  The hashset created gets follow parameters:
-    #   @sys.getsizeof(str) is the size of some string in Python
     path = '/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas'
     for infile in glob.glob(os.path.join(path, '*.csv')):
         f = open(infile, "r")
         line = f.readline()
-        
+
         while line:
             obj2 = re.search('[0-9]+', line)
             if obj2:
@@ -138,15 +121,9 @@ def getLenHostsReceitas():
 def getLenHostDespesas():
     return len(hostsDespesas)
 
-    
+
 start = time.time()
 def main():
-    ## Uses ctypes to try to load the C module.
-    #  @load is the cdll referency that loads dynamic link libraries.
-    try:
-        load = cdll.LoadLibrary('./moduleVectorHash/moduleVectorHash.so')
-    except:
-        print "Can't load C module!"
     queueHostsDespesas()
     lenHostReceitas = getLenHostsReceitas()
     lenHostDespesas = getLenHostDespesas()
@@ -211,7 +188,7 @@ def main():
 
     #putFilesInHash(load)
 
-    
+
 main()
 
 print "Elapsed Time: %s " % (time.time() - start)
