@@ -1,0 +1,168 @@
+\documentclass{article}
+
+
+ 	\usepackage[latin1]{inputenc}
+	\usepackage{amssymb}
+	\usepackage{url}
+	\usepackage{graphicx} %importar imagens
+	\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+	%HyperLinks no arquivo Pdf
+	\usepackage[dvips, bookmarks, colorlinks=false, pdftitle={Exemplo Pdf Latex}, pdfauthor={Carla Rocha}, pdfsubject={From LaTeX to PDF}, pdfkeywords={PDF, LaTeX, hyperlinks, hyperref}]{hyperref}
+
+ \title{Lucid Scrapy}
+ \author{Maylon Felix de Brito - 09/0011171\thanks{e-mail:maylon.felix@gmail.com}\\ Kamilla Holanda - 09/0038363\thanks{e-mail:holanda.kamilla@gmail.com}}
+ 
+ \begin{document}
+ \maketitle
+ \begin{abstract}
+ Esse relatório apresenta um sistema desenvolvido em linguagem Python que utiliza um sistema concorrente para realizar a tarefa web scraping das variáveis em um período de tempo regular. As variáveis extraídas são armazenadas em um hashset desenvolvido em linguagem C. Desse modo, são exploradas as características de Programação Concorrente, Programação Imperativa e Programação Orientada a Objetos.
+ \end{abstract}
+ 
+\section{Introdução}
+\label{Sec:Introducao}
+ 
+ Um dos maiores objetivos da moderna Administração Pública é estímulo à transparência pública. A ampliação da divulgação das ações governamentais a maioria dos brasileiros contribui para o fortalecimento da democracia e prestigia e desenvolve as noções de cidadania.
+
+ As Páginas de Transparência Pública dão continuidade às ações de governo voltadas para o incremento da transparência e do controle social, com objetivo de divulgar as despesas realizadas pelos órgãos e entidades da Administração Pública Federal, informando sobre execução orçamentária, licitações, contratações, convênios, diárias e passagens. 
+
+ Dessa forma, conforme dispõe a Portaria Interministerial nº 140, de 16 de março de 2006, cada órgão e entidade deve ter sua própria Página de Transparência com informações detalhadas. Seguindo o que dispõe essa portaria o  governo do Governo do Distrito Federal (GDF) apresenta os seus gasto no Portal da Transparência do Distrito Federal \footnote{Portal da Transparência do Distrito Federal:\url{http://www.transparencia.df.gov.br}.}.
+ 
+ Dada a importância que a transparência pública assumiu nos dias atuais, esse projeto tem por objetivo facilitar o acompanhamento e a visualização dos gastos do GDF por meio de um desenvolvimento de um sistema de monitoramento Web.
+
+ O sistema de Monitoramento consiste em extrair dados específicos a um determinado contexto na web, rastrear esse dado a uma dada frequência, e inferir informações sobre essa massa de dados. Nesse projeto esses dados serão apresentados em gráficos detalhados que facilitarão sua interpretação pelos cidadãos.
+
+ A disciplina de Paradigmas de Programação  se propões a ensinar os fundamentos de linguagem de programação e proporcionar a prática de programação com os principais paradigmas de programação. O objetivo é proporcionar ao aluno uma visão geral dos conceitos envolvidos no projeto e no uso de paradigmas de programação para que ele tenha condições de selecionar a linguagem correta para a implementação de um sistema.
+ Esse projeto de implementação de um sistema de monitoramento em tempo real se encaixa perfeitamente dentro do contexto da disciplina.
+Uma vez que está sendo desenvolvido em linguagem Python um sistema concorrente para realizar a tarefa web scraping das variáveis em período de tempo regular. As variáveis extraídas são armazenadas em um hashset desenvolvido em linguagem C. Desse modo, são exploradas as características de Programação Concorrente, Programação Imperativa e Programação Orientada a Objetos.
+
+ As entradas desse programa são basicamente as receitas e as despesas do GDF, sendo esses dados atualizadas diariamente. Nessa lista as variáveis extraídas são:
+
+ 	\begin{itemize}
+ 		\item Receita: Recursos auferidos na gestão, a serem computados na apuração do resultado do exercício, desdobrados nas categorias econômicas de correntes e de capital.
+ 		\item Receita Corrente: No sentido amplo, consiste na soma de valores recebidos durante um determinado período de tempo. No setor público, é a soma de ingressos, impostos, taxas, contribuições e outras fontes de recursos, arrecadados para atender às despesas públicas.
+ 		\item Receita de Capital: São os ingressos de recursos financeiros oriundos de atividades operacionais ou não operacionais para aplicação em despesas operacionais, correntes ou de capital, visando ao atingimento dos objetivos traçados nos programas e ações de governo. São denominados receita de capital porque são derivados da obtenção de recursos mediante a constituição de dívidas, amortização de empréstimos e financiamentos e/ou alienação de componentes do ativo permanente.
+ 		\item Receitas intra orçamentarias correntes: São receitas correntes de órgãos, autarquias, fundações, empresas dependentes e de outras entidades integrantes dos orçamentos fiscal e da seguridade social, quando o fato que originar a receita decorrer de despesa de órgão, autarquia, fundação, empresa dependente ou de outra entidade constante desses orçamentos, no âmbito da mesma esfera de governo.
+ 		\item Receitas intra Orçamentarias capital:Receitas de capital de órgãos, fundos, autarquias, fundações, empresas estatais dependentes e outras entidades integrantes dos orçamentos fiscal e da seguridade social derivadas da obtenção de recursos mediante a constituição dedívidas, amortização de empréstimos e financiamentos ou alienação decomponentes do ativo permanente, quando o fato que originar a receita decorrer dedespesa de órgão, fundo, autarquia, fundação, empresa estatal dependente ou outraentidade constante desses orçamentos, no âmbito da mesma esfera de governo.
+ 		\item Deduções Restituições receitas: São as deduções de restituições de receitas.
+ 	\end{itemize}
+
+ As saídas desse programa são basicamente gráficos detalhados das receitas e das despesas do GDF. Os tipos de gráficos utilizados são conhecidos como gráficos de colunas com detalhamentos.
+
+\section{Desenvolvimento}
+\label{Sec:Desenvolvimento}
+ 
+ Nessa seção desenvolvimento é apresentada a estrutura/arquitetura do Programa, o seu procedimento para a execução, os problemas técnicos enfrentados no desenvolvimento e as bibliotecas externas necessárias para a solução do problema.
+
+\subsection{Arquitetura}
+\label{SebSec:Arquitetura}
+
+ O programa possui três grandes módulos, um módulo em Python, um módulo em C e um módulo que utiliza HTML, CSS e JavaScript. Cada módulo possui um comportamento próprio e funções bem definidas. A Figura \ref{Fig1} apresenta uma visão da arquitetura do programa. 
+	
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=15cm]{arquitetura.jpg}
+   \caption{Arquitetura do Programa.}
+  \label{Fig1}
+\end{figure}
+
+ Cada um das funções de cada módulo são detalhadas abaixo:
+
+\begin{itemize}
+\item Gerenciamento de threads e manipulação de Strings: 
+
+O programa está centrado em python. O módulo python cria e gerencia as threads que são utilizadas para realizar a extração de dados. Nesse ponto são implementados os conceitos de programação concorrente vistos em sala de aula, uma vez que a utilização de threads paralelisa a extração de dados tornando o processo de webscrapping mais rápido. 
+
+Além de gerenciamento dos threads o módulo Python é responsável pela manipulação das variáveis extraídas em formato Strings, pois possui uma enorme quantidade de recursos para manipular Strings e Expressões Regulares. 
+
+O módulo permite o armazenamento das variáveis em arquivos no formato CSV. Esse é o formato de arquivos interpretado pelos demais módulos.
+\item Integração entre Python e C: 
+
+O Python gerencia a integração entre os dois módulos. Ele chama e utiliza as funções implementadas em C utilizando um recurso chamado Ctypes \footnote{Ctypes:\url{http://docs.python.org/library/ctypes.html}.}. Ctypes é uma biblioteca funcional externa para Python que prove compatibilidade entre os tipos de dados C/Python e permite a chamada de funções implementadas em C.
+\item Definição da estrutura de hash e manipulações matemáticas: 
+
+No módulo C estão implementadas as estruturas de hashset.
+
+São realizadas manipulações matemáticas nesse módulo.
+\item Camada de apresentação: 
+
+Esse módulo do sistema é responsável pela apresentação ao usuário final das variáveis manipuladas. Ele foi desenvolvido utilizando o Twitter Bootstrap \footnote{Homepage Twitter Bootstrap:\url{http://twitter.github.com/bootstrap/}.}  que é uma  coleção de ferramentas grátis para criação de websites e aplicações web. Ele permite uma melhor utilização dos recursos disponíveis em  HTML e CSS, pois possui diversos templates e outros componentes de interface. 
+
+O portal \ref{Fig2} reune uma serie de informações referentes a documentação do sistema, ferramentas utilizadas e permite o download de todo o código do projeto, entretanto sua principal função é apresentar graficamente os dados obtidos. Os gráficos são gerados utilizando uma biblioteca JavaScript chamada HighCharts \footnote{Homepage HighCharts:\url{http://www.highcharts.com/}.} . Os dados de entrada para criação dos gráficos são arquivos no formato CSV.
+\end{itemize}
+
+	
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=15cm]{tela_inicial.png}
+ \caption{Página inicial do Sistema.}
+ \label{Fig2}
+\end{figure}
+
+
+
+\subsection{Execução}
+\label{SebSec:Execucao}
+
+ Os passos juntamente com as bibliotecas necessárias para execução do programa são apresentados nessa seção. O software deve ser executado em sistema operacional linux e no browser google chromium. A IDE de desenvolvimento é o Netbeans 6.5, a versão do Python é a 2.7.2, para a documentação esta sendo usado o Doxygen 1.8.2 e para controle de versão e compartilhamento de código o Git distributed version control system 1.7.12.
+
+ O programa está centrado em Python e para que ele consiga controlar todos os módulos e realizar suas funções são necessárias algumas bibliotecas adicionais listadas abaixo. A instalação das bibliotecas pode ser facilitada utilizando easy install \footnote{Biblioteca easy install:\url{http://packages.python.org/distribute/easy_install.html}.}
+
+\begin{itemize}
+\item ctypes;
+\item mechanize;
+\item cookielib;
+\item threading;
+\item Queue;
+\item errno;
+\item sys;
+\item time;
+\item ast;
+\item BeautifulSoup;
+\item os;
+\item re; 
+\end{itemize}
+
+\subsection{Resultados}
+\label{SebSec:Resultados}
+ 
+ Os resultados da execução do sistema são apresentados graficamente. Nos gráficos de receitas são apresentadas as receitas previstas, realizadas e a diferença entre o previsto e o realizado conforme \ref{Fig3}, assim como é possível exportar os gráficos em diversos formatos de imagens, por exemplo, png, jpeg, etc.
+
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=15cm]{receitas.png}
+ \caption{Gráfico de receitas.}
+ \label{Fig3}
+\end{figure}
+
+\subsection{Problemas Técnicos}
+\label{SebSec:ProblemasTecnicos}
+
+ Os principais problemas enfrentados nessas lista foram na hora de manipulação dos threads e da criação dos gráficos com HighCharts. A seguir cada problema é detalhado:
+
+\begin{itemize}
+\item Um dos problemas enfretnados foi durante a criação das threads que deveriam salvar os arquivos no formato CSV. Nem todas executavam e quando executavam não traziam a resposta esperada.
+\item Embora a manipulação de Strings em python seja simples, nem toda as operações com strings foram realizadas nessa linguagem. Um simples tentativa de tentar concatenar duas strings em C gerol o seguinte erro\ref{Fig4}. Esse erro acontecia devido ao grande número de dados que ocupavam a memória.
+\item A criação de gráficos com HighCharts a partir dos arquivos no formato CSV foi bem complicada. Mesmo toda com toda a lógica correta os gráficos simplesmente não eram gerados. Após muita pesquisa descobriu-se que o JavaScript não estava conseguindo ler os arquivos no formato CSV no disco local. Esse é um dos padrões de segurança implementados pelos browsers. Para resolver esse problema descobriu-se a existencia de flags que podem ser utilizados no chromium. Essa flags dão ao browser funcionalidades especiais, pois habilitam ou desabilitam certos recursos padrões. Uma dessas flags é "--allow-file-access-from-files" que permite que os arquivos indicados a seguir consigam ler arquivos em diretórios locais. Desse modo essa flag resolveu o problema da geração dos graficos. 
+\end{itemize}
+
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=15cm]{erro.png}
+ \caption{Erro na manipulação de Strings.}
+ \label{Fig4}
+\end{figure}
+
+ 
+\section{Conclusão}
+\label{Sec:Conclusao}
+ 
+ Esse trabalho foi de encontro a grande demanda dos dias atuais por transparência pública, pois facilita o acesso as informações de como o governo vem investindo o dinheiro dos seus contruintes. O sistema de Monitoramento desenvolvido extrai os dados específicos dos gastos do GDF a uma dada frequência, manipula os dados e os apresentados em gráficos detalhados que facilitarão sua interpretação pelos cidadãos.
+
+ As principais dificuldades enfrentadas na realização do projeto concentraram-se no gerenciamento de threads, integração do python com C, expressões regulares e na criação dos gráficos. Embora grande parte desses problemas tenha demandado muito tempo para ser corrigido, eles possibilitaram grande aprendizado em C, Python, HTML, CSS e JavaScript. Assim como permitiu a prática dos paradigmas de Concorrente, Imperativo e Orientada a Objetos.
+ 
+%\bibliographystyle{acmsiggraph}
+\bibliography{bibliografia}
+
+\end{document}

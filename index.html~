@@ -2,7 +2,7 @@
 <html lang="en-US">
     <head>
         <meta charset="UTF-8">
-        <title>Ferramentas</title>
+        <title>Lucid Scrapy</title>
  
         <!-- JQUERY -->
  <!--      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -20,14 +20,14 @@
     <body>
 
 
-        <!-- HEADER -->
+           <!-- HEADER -->
         <header class="container-fluid">
             <!div class="row">
                 <!div class="span12">
                     <div class="navbar">
                         <div class="navbar-inner">
                             <div class="container">
-                                <h2>Lucid Scrapy</h2>
+                                <h2>Lucid Scrapy - Como estão gastando meu dinheiro?</h2>				
                             </div>
                         </div>
                     </div>
@@ -42,30 +42,42 @@
 
 <!-- Masthead
 ================================================== -->
-<header class="jumbotron subhead" id="overview">
+<!header class="jumbotron subhead" id="overview">
   <div class="row">
-    <div class="span10">
-<!--      <h1>LucidyScrapy</h1>-->
-      <p class="lead  offset1">This is a project about government open data that uses Python to get information about expenses from Governo do Distrito Federal (Brazil). </p>
+    <div class="span11 offset1">
+      <!h1LucidyScrapy</h1>
+      <p class="lead">This is a project about government open data that uses Python to get information about expenses from Governo do Distrito Federal (Brazil). </p>
     </div>
      </div>
+
+
+
+
   <div class="subnav">
     <ul class="nav nav-pills">
-      <li><a href="index.html">Bem Vindo</a></li>
+      <li><a href="#welcome">Bem Vindo</a></li>
       <li><a href="receitas.htm">Gráficos</a></li>
       <li><a href="./docs/html/index.html">Documentação</a></li>
-      <li><a href="#tools">Ferramentas</a></li>
+<li><a href="glossario.html">Glossário</a></li>
+
+      <li><a href="ferramentas.html">Ferramentas</a></li>
       <li><a href="https://github.com/KamillaaaH/LucidScrapy">Download</a></li>
-     </ul>
+    </ul>
+
   </div>
-</header>
+<!/header>
+
+
+
+    
+
 
 
 <!-- Welcome
-================================================== --
+================================================== -->
 <section id="welcome">
   <div class="hero-unit">
-    <!--div class="span10"--
+    <!--div class="span10"-->
       <h3>Bem Vindo</h3>
 
         <p>Um dos maiores objetivos da moderna Administração Pública é estímulo à transparência pública. A ampliação da divulgação das ações governamentais a maioria dos brasileiros contribui para o fortalecimento da democracia e prestigia e desenvolve as noções de cidadania.</p>
@@ -92,7 +104,7 @@
 </section>
 
 
-<-- Graphs
+<!-- Graphs
 ================================================== --
 <section id="grafhs">
   <div class="page-header">
@@ -157,15 +169,15 @@
  
 
 <!-- Tools
-================================================== -->
+================================================== --
 <section id="tools">
-  <div class="hero-unit">
-    <!div class="span10">
+  <div class="page-header">
+    <div class="span10">
       <h3>Ferramentas</h3>
 
                
-            <!div class="span6">
-                    <!div class="well">
+            <div class="span6">
+                    <div class="well">
                         
 
                     <ul class="nav nav-tabs nav-stacked">
@@ -210,9 +222,9 @@
                         </li>
                     </ul>
                            </div>
-                <!/div>
-            <!/div>
-        <!/div>
+                </div>
+            </div>
+        </div>
 
   </div>
 
@@ -220,6 +232,15 @@
 
 
     
+
+<!-- Authors
+================================================== -->
+
+  <!div class="hero-unit">
+    <!div class="span8 offset1">
+    
+  <!/div>
+
 
 <!-- HEADER -->
         <header class="container-fluid">
@@ -242,6 +263,8 @@
             <!/div>
         </header>
         <!-- / HEADER -->
+
+
 
 
 

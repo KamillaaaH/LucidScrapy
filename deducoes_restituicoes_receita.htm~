@@ -56,7 +56,7 @@ $(document).ready(function() {
 		        if (itemNo > 1) options.xAxis.categories.push(item);
 		    });
 		}
-		else if (lineNo == 2) {
+		else if (lineNo == 3) {
 				//series.name = item;
 			}
 		
@@ -105,7 +105,7 @@ $(document).ready(function() {
                     <div class="navbar">
                         <div class="navbar-inner">
                             <div class="container">
-                                <h2>Lucidy Scrap</h2>
+                                <h2>Lucid Scrapy</h2>
                             </div>
                         </div>
                     </div>

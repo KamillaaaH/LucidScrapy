@@ -107,7 +107,7 @@ $(document).ready(function() {
                     <div class="navbar">
                         <div class="navbar-inner">
                             <div class="container">
-                                <h2>Lucidy Scrap</h2>
+                                <h2>Lucid Scrapy</h2>
                             </div>
                         </div>
                     </div>

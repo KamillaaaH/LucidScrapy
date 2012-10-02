@@ -29,7 +29,7 @@ $(document).ready(function() {
 		text: 'Despesas Categoria Credor'
 	    },
 	    xAxis: {
-		categories: []
+		categories: ['Total empenhado','Total a pagar']
 	    },
 	    yAxis: {
 		title: {
@@ -43,8 +43,8 @@ $(document).ready(function() {
 	    series: []
 	};
 
-	$.get('./src/dataDespesas/despesas_categoria_credor_0.csv', function(data) {
-	    // Split the lines
+	$.get('./src/despesas.csv', function(data) {
+	    	     // Split the lines
 	    var lines = data.split('\n');
 	    // Iterate over the lines and add categories or series
 	    $.each(lines, function(lineNo, line) {
@@ -53,7 +53,7 @@ $(document).ready(function() {
 		// header line containes categories
 		if (lineNo == 0) {
 		    $.each(items, function(itemNo, item) {
-		        if (itemNo > 5) options.xAxis.categories.push(item);
+		        if (itemNo > 1) options.xAxis.categories.push(item);
 		    });
 		}
 		else if (lineNo == 6) {
@@ -107,7 +107,7 @@ $(document).ready(function() {
                     <div class="navbar">
                         <div class="navbar-inner">
                             <div class="container">
-                                <h2>Lucidy Scrap</h2>
+                                <h2>Lucid Scrapy</h2>
                             </div>
                         </div>
                     </div>
@@ -135,7 +135,7 @@ $(document).ready(function() {
 
   <div class="subnav">
     <ul class="nav nav-pills">
-<li><a href="site.html">Home</a></li>
+<li><a href="index.html">Home</a></li>
       <li><a href="receitas.htm">Despesas Categoria Credor</a></li>
    <li><a href="receita_capital.htm">Receita Capital</a></li>
    <li><a href="receitas_correntes.htm">Receitas Correntes</a></li>
