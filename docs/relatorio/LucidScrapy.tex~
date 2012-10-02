@@ -9,7 +9,7 @@
 	%HyperLinks no arquivo Pdf
 	\usepackage[dvips, bookmarks, colorlinks=false, pdftitle={Exemplo Pdf Latex}, pdfauthor={Carla Rocha}, pdfsubject={From LaTeX to PDF}, pdfkeywords={PDF, LaTeX, hyperlinks, hyperref}]{hyperref}
 
- \title{Lucidy Scrap}
+ \title{Lucid Scrapy}
  \author{Maylon Felix de Brito - 09/0011171\thanks{e-mail:maylon.felix@gmail.com}\\ Kamilla Holanda - 09/0038363\thanks{e-mail:holanda.kamilla@gmail.com}}
  
  \begin{document}
@@ -56,7 +56,7 @@ Uma vez que está sendo desenvolvido em linguagem Python um sistema concorrente p
 \subsection{Arquitetura}
 \label{SebSec:Arquitetura}
 
- O programa possui três grandes módulos, um módulo em Python, um módulo em C e um módulo que utiliza HTML, CSS e JavaScript. Cada módulo possui um comportamento próprio e funções bem definidas. A Figura \ref{Fig1} apresenta uma visão da arquitetura do programa. 
+ O programa possui três grandes módulos, um módulo em Python, um módulo em C e um módulo que utiliza HTML, CSS e JavaScript. Cada módulo possui um comportamento próprio e funções bem definidas. A Figura\ref{Fig1} apresenta uma visão da arquitetura do programa. 
 	
 \begin{figure}[ht]
   \centering
@@ -87,7 +87,7 @@ São realizadas manipulações matemáticas nesse módulo.
 
 Esse módulo do sistema é responsável pela apresentação ao usuário final das variáveis manipuladas. Ele foi desenvolvido utilizando o Twitter Bootstrap \footnote{Homepage Twitter Bootstrap:\url{http://twitter.github.com/bootstrap/}.}  que é uma  coleção de ferramentas grátis para criação de websites e aplicações web. Ele permite uma melhor utilização dos recursos disponíveis em  HTML e CSS, pois possui diversos templates e outros componentes de interface. 
 
-O portal \ref{Fig2} reune uma serie de informações referentes a documentação do sistema, ferramentas utilizadas e permite o download de todo o código do projeto, entretanto sua principal função é apresentar graficamente os dados obtidos. Os gráficos são gerados utilizando uma biblioteca JavaScript chamada HighCharts \footnote{Homepage HighCharts:\url{http://www.highcharts.com/}.} . Os dados de entrada para criação dos gráficos são arquivos no formato CSV.
+O portal\ref{Fig2} reune uma serie de informações referentes a documentação do sistema, ferramentas utilizadas e permite o download de todo o código do projeto, entretanto sua principal função é apresentar graficamente os dados obtidos. Os gráficos são gerados utilizando uma biblioteca JavaScript chamada HighCharts \footnote{Homepage HighCharts:\url{http://www.highcharts.com/}.} . Os dados de entrada para criação dos gráficos são arquivos no formato CSV.
 \end{itemize}
 
 	
@@ -125,7 +125,7 @@ O portal \ref{Fig2} reune uma serie de informações referentes a documentação do 
 \subsection{Resultados}
 \label{SebSec:Resultados}
  
- Os resultados da execução do sistema são apresentados graficamente. Nos gráficos de receitas são apresentadas as receitas previstas, realizadas e a diferença entre o previsto e o realizado conforme \ref{Fig3}, assim como é possível exportar os gráficos em diversos formatos de imagens, por exemplo, png, jpeg, etc.
+ O resultado final do projeto pode ser visualizado em \url{https://www.softwareengineerplayer.com/lucidscrapy}. Os resultados da execução do sistema são apresentados graficamente. Nos gráficos de receitas são apresentadas as receitas previstas, realizadas e a diferença entre o previsto e o realizado conforme\ref{Fig3}, assim como é possível exportar os gráficos em diversos formatos de imagens, por exemplo, png, jpeg, etc.
 
 
 \begin{figure}[ht]
