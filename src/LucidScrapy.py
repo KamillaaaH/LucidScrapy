@@ -97,14 +97,16 @@ def queueHostsDespesas():
 
 
 def concatFiles(path, fileName):
+    rows = []
     for infile in glob.glob(os.path.join(path, '*.csv')):
         csvReader = csv.reader(open(infile, 'r'), delimiter=',', quotechar='|')
         c = csv.writer(open(fileName, "wb"))
-        pttr = re.compile(r'[0-9]')
+        #pttr = re.compile(r'[0-9]')
         for row in csvReader:
-            print row
+            rows.append(row)
             #if (pttr.match(str(row))) and (pttr.match(str(row))):
-            c.writerow(row)
+        for i in row:
+            c.writerow(i)
 
 def sumDespesas(path, labels, fileName):
     for infile in glob.glob(os.path.join(path, '*.csv')):
@@ -133,7 +135,6 @@ def getLenHostDespesas():
 
 start = time.time()
 def main():
-    labels = ['TOTALEMPENHO', 'TOTALPAGAR']
     queueHostsDespesas()
     lenHostReceitas = getLenHostsReceitas()
     lenHostDespesas = getLenHostDespesas()
@@ -197,9 +198,10 @@ def main():
     ####
 
     #putFilesInHash(load)
-    sumDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", labels, "despesas_total.csv")
-    concatFiles("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesas.csv")
-
+    
 main()
+labels = ['TOTALEMPENHO', 'TOTALPAGAR']
+#sumDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", labels, "despesas_total.csv")
+concatFiles("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesas.csv")
 
 print "Elapsed Time: %s " % (time.time() - start)
