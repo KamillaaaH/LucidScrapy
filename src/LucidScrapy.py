@@ -32,6 +32,7 @@ import Queue
 import ThreadUrl
 import cookielib
 import mechanize
+import csv
 import re
 
 hostsReceitas = {'receitas': "http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Receitas/ServicoGradeReceitasPorCategoria.ashx?tipoApresentacao=consulta&exercicio=2012&tipoCodigo=Geral&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeReceitasPorCategoria-0&_dataSource=dsReceitasPorCategoria-0&isc_metaDataPrefix=_&isc_dataFormat=json",
@@ -71,7 +72,7 @@ def getBrowser():
     # Add http headers
     br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
     return br
-
+    
 def getNumberRows():
     br = getBrowser()
     response = br.open("http://www.transparencia.df.gov.br/_layouts/Br.Gov.Df.Stc.SharePoint/servicos/Despesas/ServicoGradeDespesasOrgaoCredor.ashx?tipoApresentacao=consulta&exercicio=2012&_operationType=fetch&_startRow=0&_endRow=75&_textMatchStyle=substring&_componentId=gradeDespesasOrgaoCredor&_dataSource=dsDespesasOrgaoCredor&isc_metaDataPrefix=_&isc_dataFormat=json").get_data()
@@ -95,25 +96,33 @@ def queueHostsDespesas():
         j = j + 1
 
 
-def calculateAverageDespesas():
-    path = '/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas'
+def concatFiles(path, fileName):
     for infile in glob.glob(os.path.join(path, '*.csv')):
-        f = open(infile, "r")
-        line = f.readline()
+        csvReader = csv.reader(open(infile, 'r'), delimiter=',', quotechar='|')
+        c = csv.writer(open(fileName, "wb"))
+        pttr = re.compile(r'[0-9]')
+        for row in csvReader:
+            print row
+            #if (pttr.match(str(row))) and (pttr.match(str(row))):
+            c.writerow(row)
 
-        while line:
-            obj2 = re.search('[0-9]+', line)
-            if obj2:
-                buffer = obj2.group()
-                obj1 = re.search('[0-9]+', line)
-                if obj1:
-                    list = open(buffer + ".csv")
-                    while buffer == obj1:
-                        list.writerow(line)
-            line = f.readline()
+def sumDespesas(path, labels, fileName):
+    for infile in glob.glob(os.path.join(path, '*.csv')):
+        csvReader = csv.reader(open(infile, 'r'), delimiter=',', quotechar='|')
+        c = csv.writer(open(fileName, "wb"))
+        c.writerow(labels)
+        totalEmpenho = totalPagar = 0
+        pttr = re.compile(r'[0-9]+')
+        for row in csvReader:
+            if (pttr.match(row[2]))  and (pttr.match(row[3])):
+                print row[2]
+                print row[3]
+                totalEmpenho = totalEmpenho + int(row[2])
+                totalPagar = totalPagar + int(row[3])
 
-        f.close()
-        list.close()
+        line = [totalEmpenho, totalPagar]
+        c.writerow(line)
+      
 
 def getLenHostsReceitas():
     return len(hostsReceitas)
@@ -124,6 +133,7 @@ def getLenHostDespesas():
 
 start = time.time()
 def main():
+    labels = ['TOTALEMPENHO', 'TOTALPAGAR']
     queueHostsDespesas()
     lenHostReceitas = getLenHostsReceitas()
     lenHostDespesas = getLenHostDespesas()
@@ -187,7 +197,8 @@ def main():
     ####
 
     #putFilesInHash(load)
-
+    sumDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", labels, "despesas_total.csv")
+    concatFiles("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesas.csv")
 
 main()
 
