@@ -105,7 +105,8 @@ def concatFiles(path, fileName):
         for row in csvReader:
             rows.append(row)
             #if (pttr.match(str(row))) and (pttr.match(str(row))):
-        for i in row:
+        for i in rows:
+            print i
             c.writerow(i)
 
 def sumDespesas(path, labels, fileName):
@@ -201,7 +202,7 @@ def main():
     
 main()
 labels = ['TOTALEMPENHO', 'TOTALPAGAR']
-#sumDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", labels, "despesas_total.csv")
-concatFiles("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesas.csv")
+sumDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", labels, "despesas_total.csv")
+#concatFiles("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesas.csv")
 
 print "Elapsed Time: %s " % (time.time() - start)
