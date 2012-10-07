@@ -8,13 +8,10 @@
 __author__ = "kamilla e maylon"
 __date__ = "$Aug 1, 2012 10:52:37 AM$"
 
-from datetime import date
-import errno
-import sys
 import json
-import os
 import re
 import UnicodeDictWriter
+import Util
 import csv
 
 ## @class LucidFetchReceitas()
@@ -35,21 +32,14 @@ class LucidFetchReceitas():
         labels.append("R___")
 
         pathName = "dataReceitas"
-        self.verifyFolder(pathName)
+        util = Util.Util()
+        util.verifyFolder(pathName)
         fileName = pathName + "/" + str(category) + ".csv"
 
 
         with open(fileName, 'w') as csvfile:
             labelWriter = csv.writer(csvfile, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            labelWriter.writerow(labels)
+            #labelWriter.writerow(labels)
             writer = UnicodeDictWriter.UnicodeDictWriter(csvfile, labels)
             writer.writerows(json.loads(response)['response']['data'])
-
-    def verifyFolder(self, pathName):
-        try:
-            if not os.path.exists(pathName):
-                os.makedirs(pathName)
-        except IOError as e:
-            print "I/O error({0}): {1}".format(e.errno, e.strerror)
-            return "Maybe you don't have permission to access this folder"
