@@ -22,6 +22,7 @@ __date__ = "$Aug 1, 2012 10:52:37 AM$"
 # etc...
 #/
 import time
+
 import DatamineThread
 import LucidFetchDespesas
 import LucidFetchReceitas
@@ -97,11 +98,11 @@ def splitFilesTypeDespesasDiversas(path, fileName):
         c.writerow(i)
 
 
-def sumDespesas(path, labels, fileName):
+def sumDespesas(path, fileName):
     for infile in glob.glob(os.path.join(path, '*.csv')):
         csvReader = csv.reader(open(infile, 'r'), delimiter=',', quotechar='|')
         c = csv.writer(open(fileName, "wb"))
-        c.writerow(labels)
+        #c.writerow(labels)
         totalEmpenho = totalPagar = 0
         pttr = re.compile(r'[0-9]+')
         for row in csvReader:
@@ -109,9 +110,58 @@ def sumDespesas(path, labels, fileName):
                 totalEmpenho = totalEmpenho + int(row[2])
                 totalPagar = totalPagar + int(row[3])
                 
-        line = [totalEmpenho, totalPagar]
+        line = ['TOTAL EMPENHADO', totalEmpenho]
         c.writerow(line)
-      
+        line = ['TOTAL A PAGAR', totalPagar]
+        c.writerow(line)
+
+def sumCategoria(path, fileName):
+    c = csv.writer(open(fileName, "wb"))
+    label = ["TIPO", "EMPENHADO", "PAGO"]
+    c.writerow(label)
+    for infile in glob.glob(os.path.join(path, '*.csv')):
+        csvReader = csv.reader(open(infile, 'r'), delimiter=',', quotechar='|')
+        #c.writerow(labels)
+        totalEmpenho = totalPagar = 0
+        
+        pttr = re.compile(r'[0-9]+')
+        #pttr = re.compile(r'(SEC|ADMINISTRAÇÃO|FUNDA|FUNDO|COMPANHIA|INSTITUTO)')
+        pttrAdm = re.compile(r'ADMINISTRAÇÃO')
+        pttrSec = re.compile(r'SEC')
+        pttrFundacao = re.compile(r'FUNDA')
+        pttrFundo = re.compile(r'FUNDO|\"FUNDO')
+        pttrCompanhia = re.compile(r'COMPANHIA')
+        pttrInstituto = re.compile(r'INSTITUTO')
+
+        
+        for row in csvReader:
+            if (pttr.match(row[2]))  and (pttr.match(row[3])):
+                #print str(row[2]) + str(row[3])
+                totalEmpenho = totalEmpenho + int(row[2])
+                totalPagar = totalPagar + int(row[3])
+            
+
+        print str(totalEmpenho) + str(totalPagar)
+
+        if(pttrAdm.match(row[1])):
+            line = ["ADMINISTRAÇÕES", str(totalEmpenho), str(totalPagar)]
+        elif(pttrSec.match(row[1])):
+            line = ["SECRETARIAS", str(totalEmpenho), str(totalPagar)]
+        elif(pttrFundacao.match(row[1])):
+            line = ["FUNDACOES", str(totalEmpenho), str(totalPagar)]
+        elif(pttrFundo.match(row[1])):
+            line = ["FUNDOS", str(totalEmpenho), str(totalPagar)]
+        elif(pttrCompanhia.match(row[1])):
+            line = ["COMPANHIAS", str(totalEmpenho), str(totalPagar)]
+        elif(pttrInstituto.match(row[1])):
+            line = ["INSTITUTOS", str(totalEmpenho), str(totalPagar)]
+        else:
+            print row[1]
+            line = ["DIVERSAS", str(totalEmpenho), str(totalPagar)]
+        
+        c.writerow(line)
+        totalEmpenho = totalPagar = 0
+
 
 def getLenHostsReceitas():
     return len(hostsReceitas)
@@ -121,6 +171,7 @@ def getLenHostDespesas():
 
 start = time.time()
 def main():
+
     queueHostsDespesas()
     lenHostReceitas = getLenHostsReceitas()
     lenHostDespesas = getLenHostDespesas()
@@ -180,16 +231,17 @@ def main():
     ####
     # End threads to fetch DESPESAS
     ####
+    
 
     util.verifyFolder("despesasCategoria")
-    labels = ['TOTALEMPENHO', 'TOTALPAGAR']
     pttrAdm = re.compile(r'ADMINISTRAÇÃO')
     pttrSec = re.compile(r'SEC')
     pttrFundacao = re.compile(r'FUNDA')
     pttrFundo = re.compile(r'FUNDO')
     pttrCompanhia = re.compile(r'COMPANHIA')
     pttrInstituto = re.compile(r'INSTITUTO')
-    sumDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", labels, "despesas_total.csv")
+    sumDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesas_total.csv")
+    sumCategoria("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesasCategoria", "despesas_total_categoria.csv")
     util.concatFiles("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesas.csv")
     splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesas.csv", "despesasCategoria/despesas_administracao.csv", pttrAdm, 1)
     splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesas.csv", "despesasCategoria/despesas_fundacao.csv", pttrFundacao, 1)
