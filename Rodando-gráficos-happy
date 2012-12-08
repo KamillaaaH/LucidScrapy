@@ -1,3 +1,0 @@
-O projeto roda no google chrome.
-Comando a ser escrito no terminal:
-chromium-browser --allow-file-access-from-files "file:///home/felix/LucidScrapy/index.htm"
