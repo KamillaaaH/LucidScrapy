@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 *-*
 __author__="kamilla and maylon"
 __date__ ="$Sep 23, 2012 11:29:36 AM$"
@@ -40,3 +41,7 @@ class UnicodeDictWriter(csv.DictWriter):
     def writerows(self, rows):
         for row in rows:
             self.writerow(row)
+
+
+if __name__ == "__main__":
+    main()

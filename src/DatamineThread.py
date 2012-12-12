@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 *-*
 __author__="kamilla and maylon"
 __date__ ="$Sep 23, 2012 2:43:21 PM$"
@@ -18,3 +19,6 @@ class DatamineThread(threading.Thread):
             #print "dataMine: " + str(data)
             self.instance.fetch(data[0], data[1])
             self.out_queue.task_done()
+
+if __name__ == "__main__":
+    main()

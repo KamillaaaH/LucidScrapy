@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 *-*
 __author__="kamilla and maylon"
 __date__ ="$Sep 23, 2012 2:43:07 PM$"
@@ -29,3 +30,7 @@ class ThreadUrl(threading.Thread):
             #put list in out_queue
             self.out_queue.put(chunk)
             self.queue.task_done()
+
+
+if __name__ == "__main__":
+    main()

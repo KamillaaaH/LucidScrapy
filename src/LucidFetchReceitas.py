@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 *-*
 
 ## @author Kamilla H. Crozara and Maylon Felix
@@ -36,10 +37,15 @@ class LucidFetchReceitas():
         util.verifyFolder(pathName)
         fileName = pathName + "/" + str(category) + ".csv"
 
-
+        print response
         with open(fileName, 'w') as csvfile:
             labelWriter = csv.writer(csvfile, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
             #labelWriter.writerow(labels)
             writer = UnicodeDictWriter.UnicodeDictWriter(csvfile, labels)
             writer.writerows(json.loads(response)['response']['data'])
+
+
+
+if __name__ == "__main__":
+    main()

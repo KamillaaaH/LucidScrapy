@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 *-*
 __author__ = "kamilla and maylon"
 __date__ = "$Aug 1, 2012 10:52:37 AM$"
@@ -11,12 +12,16 @@ class LucidFetchDespesas():
 
     def fetch(self, category, response):
         queueDespesas = Queue.Queue()
-        jsonResponse = json.loads(response)['response']['data']
-        pathName = "dataDespesas"
         util = Util.Util()
-        util.verifyFolder(pathName)
-        buffCodUG = jsonResponse[0].get('CODIGOUG')
+        pathName = "dataDespesas"
         empenho = pagar = 0
+        
+        jsonResponse = json.loads(response)['response']['data']
+
+        buffCodUG = jsonResponse[0].get('CODIGOUG')
+
+        util.verifyFolder(pathName)
+
         labels = ['CODIGOUG', 'NOMEUG', 'TOTALEMPENHO', 'TOTALPAGAR']
 
 
@@ -39,4 +44,5 @@ class LucidFetchDespesas():
                 empenho = pagar = 0
                 buffCodUG = queueElem.get('CODIGOUG')
 
-   
+if __name__ == "__main__":
+    main()

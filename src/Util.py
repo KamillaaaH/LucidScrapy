@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 *-*
 __author__ = "kamilla"
 __date__ = "$Oct 4, 2012 4:44:16 PM$"
@@ -56,3 +57,7 @@ class Util():
                 rows.append(row)
             for i in rows:
                 c.writerow(i)
+
+
+if __name__ == "__main__":
+    main()

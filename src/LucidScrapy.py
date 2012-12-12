@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 *-*
 __author__ = "kamilla e maylon"
 __date__ = "$Aug 1, 2012 10:52:37 AM$"
@@ -110,18 +111,17 @@ def sumDespesas(path, fileName):
                 totalEmpenho = totalEmpenho + int(row[2])
                 totalPagar = totalPagar + int(row[3])
                 
-        line = ['TOTAL EMPENHADO', totalEmpenho]
+        line = ["01", 'TOTAL EMPENHADO', totalEmpenho]
         c.writerow(line)
-        line = ['TOTAL A PAGAR', totalPagar]
+        line = ["02", 'TOTAL A PAGAR', totalPagar]
         c.writerow(line)
 
 def sumCategoria(path, fileName):
     c = csv.writer(open(fileName, "wb"))
-    label = ["TIPO", "EMPENHADO", "PAGO"]
-    c.writerow(label)
+    #label = ["TIPO", "EMPENHADO", "PAGO"]
+    #c.writerow(label)
     for infile in glob.glob(os.path.join(path, '*.csv')):
         csvReader = csv.reader(open(infile, 'r'), delimiter=',', quotechar='|')
-        #c.writerow(labels)
         totalEmpenho = totalPagar = 0
         
         pttr = re.compile(r'[0-9]+')
@@ -139,42 +139,32 @@ def sumCategoria(path, fileName):
                 #print str(row[2]) + str(row[3])
                 totalEmpenho = totalEmpenho + int(row[2])
                 totalPagar = totalPagar + int(row[3])
-            
-
-        print str(totalEmpenho) + str(totalPagar)
 
         if(pttrAdm.match(row[1])):
-            line = ["ADMINISTRAÇÕES", str(totalEmpenho), str(totalPagar)]
+            line = ["01", "ADMINISTRAÇÕES", str(totalEmpenho), str(totalPagar)]
         elif(pttrSec.match(row[1])):
-            line = ["SECRETARIAS", str(totalEmpenho), str(totalPagar)]
+            line = ["02", "SECRETARIAS", str(totalEmpenho), str(totalPagar)]
         elif(pttrFundacao.match(row[1])):
-            line = ["FUNDACOES", str(totalEmpenho), str(totalPagar)]
+            line = ["03", "FUNDACOES", str(totalEmpenho), str(totalPagar)]
         elif(pttrFundo.match(row[1])):
-            line = ["FUNDOS", str(totalEmpenho), str(totalPagar)]
+            line = ["04", "FUNDOS", str(totalEmpenho), str(totalPagar)]
         elif(pttrCompanhia.match(row[1])):
-            line = ["COMPANHIAS", str(totalEmpenho), str(totalPagar)]
+            line = ["05", "COMPANHIAS", str(totalEmpenho), str(totalPagar)]
         elif(pttrInstituto.match(row[1])):
-            line = ["INSTITUTOS", str(totalEmpenho), str(totalPagar)]
+            line = ["06", "INSTITUTOS", str(totalEmpenho), str(totalPagar)]
         else:
-            print row[1]
-            line = ["DIVERSAS", str(totalEmpenho), str(totalPagar)]
+            line = ["07", "DIVERSAS", str(totalEmpenho), str(totalPagar)]
         
         c.writerow(line)
         totalEmpenho = totalPagar = 0
 
 
-def getLenHostsReceitas():
-    return len(hostsReceitas)
-
-def getLenHostDespesas():
-    return len(hostsDespesas)
-
 start = time.time()
 def main():
 
     queueHostsDespesas()
-    lenHostReceitas = getLenHostsReceitas()
-    lenHostDespesas = getLenHostDespesas()
+    lenHostReceitas = len(hostsReceitas)
+    lenHostDespesas = len(hostsDespesas)
     ####
     # Threads to fetch RECEITAS
     ####
@@ -240,15 +230,18 @@ def main():
     pttrFundo = re.compile(r'FUNDO')
     pttrCompanhia = re.compile(r'COMPANHIA')
     pttrInstituto = re.compile(r'INSTITUTO')
-    sumDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesas_total.csv")
-    sumCategoria("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesasCategoria", "despesas_total_categoria.csv")
-    util.concatFiles("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesas.csv")
-    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesas.csv", "despesasCategoria/despesas_administracao.csv", pttrAdm, 1)
-    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesas.csv", "despesasCategoria/despesas_fundacao.csv", pttrFundacao, 1)
-    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesas.csv", "despesasCategoria/despesas_secretaria.csv", pttrSec, 1)
-    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesas.csv", "despesasCategoria/despesas_fundo.csv", pttrFundo, 1)
-    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesas.csv", "despesasCategoria/despesas_companhias.csv", pttrCompanhia, 1)
-    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesas.csv", "despesasCategoria/despesas_institutos.csv", pttrInstituto, 1)
-    splitFilesTypeDespesasDiversas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesas.csv", "despesasCategoria/despesas_diversas.csv")
+    sumDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesasTotal/despesas_total.csv")
+    sumCategoria("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesasCategoria", "despesasTotal/despesas_total_categoria.csv")
+    util.concatFiles("/home/kamilla/NetBeansProjects/LucidScrapy/src/dataDespesas", "despesasTotal/despesas.csv")
+    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesasTotal/despesas.csv", "despesasCategoria/despesas_administracao.csv", pttrAdm, 1)
+    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesasTotal/despesas.csv", "despesasCategoria/despesas_fundacao.csv", pttrFundacao, 1)
+    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesasTotal/despesas.csv", "despesasCategoria/despesas_secretaria.csv", pttrSec, 1)
+    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesasTotal/despesas.csv", "despesasCategoria/despesas_fundo.csv", pttrFundo, 1)
+    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesasTotal/despesas.csv", "despesasCategoria/despesas_companhias.csv", pttrCompanhia, 1)
+    splitFilesTypeDespesas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesasTotal/despesas.csv", "despesasCategoria/despesas_institutos.csv", pttrInstituto, 1)
+    splitFilesTypeDespesasDiversas("/home/kamilla/NetBeansProjects/LucidScrapy/src/despesasTotal/despesas.csv", "despesasCategoria/despesas_diversas.csv")
 main()
 print "Elapsed Time: %s " % (time.time() - start)
+
+if __name__ == "__main__":
+    main()
